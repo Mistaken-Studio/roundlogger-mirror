@@ -17,10 +17,10 @@ namespace Mistaken.RoundLogger
         public override string Author => "Mistaken Devs";
 
         /// <inheritdoc/>
-        public override string Name => "Mistaken API";
+        public override string Name => "Mistaken RoundLogger";
 
         /// <inheritdoc/>
-        public override string Prefix => "MAPI";
+        public override string Prefix => "MRL";
 
         /// <inheritdoc/>
         public override PluginPriority Priority => PluginPriority.Higher;
