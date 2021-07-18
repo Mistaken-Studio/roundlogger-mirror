@@ -14,7 +14,7 @@ namespace Mistaken.RoundLogger
     /// <summary>
     /// Round Logger.
     /// </summary>
-    public static class RoundLogger
+    public static class RLogger
     {
         #region Public
 

@@ -18,8 +18,8 @@ namespace Mistaken.RoundLogger
         public RoundLogHandler(PluginHandler p)
             : base(p)
         {
-            RoundLogger.IniIfNotAlready();
-            RoundLogger.OnEnd += this.RoundLogHandler_OnEnd;
+            RLogger.IniIfNotAlready();
+            RLogger.OnEnd += this.RoundLogHandler_OnEnd;
         }
 
         public override bool IsBasic => true;
@@ -120,7 +120,7 @@ namespace Mistaken.RoundLogger
             Exiled.Events.Handlers.Player.MedicalItemDequipped -= this.Handle<Exiled.Events.EventArgs.DequippedMedicalItemEventArgs>((ev) => this.Player_MedicalItemDequipped(ev));
         }
 
-        private void RoundLogHandler_OnEnd(RoundLogger.LogMessage[] logs, DateTime roundStart)
+        private void RoundLogHandler_OnEnd(RLogger.LogMessage[] logs, DateTime roundStart)
         {
             string dir = Paths.Plugins + "/RoundLogger/";
             if (!Directory.Exists(dir))
@@ -133,184 +133,184 @@ namespace Mistaken.RoundLogger
 
         private void Player_MedicalItemDequipped(Exiled.Events.EventArgs.DequippedMedicalItemEventArgs ev)
         {
-            RoundLogger.Log("GAME EVENT", "MEDICAL", $"{ev.Player.PlayerToString()} used {ev.Item}");
+            RLogger.Log("GAME EVENT", "MEDICAL", $"{ev.Player.PlayerToString()} used {ev.Item}");
         }
 
         private void Player_DroppingItem(Exiled.Events.EventArgs.DroppingItemEventArgs ev)
         {
-            RoundLogger.Log("GAME EVENT", "ITEM", $"{ev.Player.PlayerToString()} dropped {ev.Item.id} (Durability: {ev.Item.durability}) with result: {(ev.IsAllowed ? "Allowed" : "Disallowed")}");
+            RLogger.Log("GAME EVENT", "ITEM", $"{ev.Player.PlayerToString()} dropped {ev.Item.id} (Durability: {ev.Item.durability}) with result: {(ev.IsAllowed ? "Allowed" : "Disallowed")}");
         }
 
         private void Player_PickingUpItem(Exiled.Events.EventArgs.PickingUpItemEventArgs ev)
         {
-            RoundLogger.Log("GAME EVENT", "ITEM", $"{ev.Player.PlayerToString()} picked up {ev.Pickup.ItemId} (Durability: {ev.Pickup.durability}) with result: {(ev.IsAllowed ? "Allowed" : "Disallowed")}");
+            RLogger.Log("GAME EVENT", "ITEM", $"{ev.Player.PlayerToString()} picked up {ev.Pickup.ItemId} (Durability: {ev.Pickup.durability}) with result: {(ev.IsAllowed ? "Allowed" : "Disallowed")}");
         }
 
         private void CustomEvents_OnBroadcast(Events.EventArgs.BroadcastEventArgs ev)
         {
             if (ev.Type == Broadcast.BroadcastFlags.AdminChat)
             {
-                RoundLogger.Log("ADMIN EVENT", "ADMIN CHAT", $"{ev.AdminName} sent \"{ev.Content}\"");
+                RLogger.Log("ADMIN EVENT", "ADMIN CHAT", $"{ev.AdminName} sent \"{ev.Content}\"");
             }
             else
             {
-                RoundLogger.Log("GAME EVENT", "BROADCAST", $"Broadcasted \"{ev.Content}\" to {ev.Targets.Length} players");
+                RLogger.Log("GAME EVENT", "BROADCAST", $"Broadcasted \"{ev.Content}\" to {ev.Targets.Length} players");
             }
         }
 
         private void Map_GeneratorActivated(Exiled.Events.EventArgs.GeneratorActivatedEventArgs ev)
         {
-            RoundLogger.Log("GAME EVENT", "GENERATOR", $"Generator in {ev.Generator.CurRoom} activated");
+            RLogger.Log("GAME EVENT", "GENERATOR", $"Generator in {ev.Generator.CurRoom} activated");
         }
 
         private void Map_ExplodingGrenade(Exiled.Events.EventArgs.ExplodingGrenadeEventArgs ev)
         {
-            RoundLogger.Log("GAME EVENT", "GRENADE", $"{this.PTS(ev.Thrower)}'s {(ev.IsFrag ? "Frag" : "Flash")} exploading on {ev.TargetToDamages.Count} target ({(ev.IsAllowed ? "allowed" : "denied")})");
+            RLogger.Log("GAME EVENT", "GRENADE", $"{this.PTS(ev.Thrower)}'s {(ev.IsFrag ? "Frag" : "Flash")} exploading on {ev.TargetToDamages.Count} target ({(ev.IsAllowed ? "allowed" : "denied")})");
         }
 
         private void Map_Decontaminating(Exiled.Events.EventArgs.DecontaminatingEventArgs ev)
         {
-            RoundLogger.Log("GAME EVENT", "DECONTAMINATION", $"Decontamination finished ({(ev.IsAllowed ? "allowed" : "denied")})");
+            RLogger.Log("GAME EVENT", "DECONTAMINATION", $"Decontamination finished ({(ev.IsAllowed ? "allowed" : "denied")})");
         }
 
         private void Server_SendingConsoleCommand(Exiled.Events.EventArgs.SendingConsoleCommandEventArgs ev)
         {
-            RoundLogger.Log("GAME EVENT", "CONSOLE", $"{this.PTS(ev.Player)} run {ev.Name} with args ({string.Join(", ", ev.Arguments)}) with result: {(ev.IsAllowed ? "Allowed" : "Disallowed")}");
+            RLogger.Log("GAME EVENT", "CONSOLE", $"{this.PTS(ev.Player)} run {ev.Name} with args ({string.Join(", ", ev.Arguments)}) with result: {(ev.IsAllowed ? "Allowed" : "Disallowed")}");
         }
 
         private void Server_SendingRemoteAdminCommand(Exiled.Events.EventArgs.SendingRemoteAdminCommandEventArgs ev)
         {
-            RoundLogger.Log("ADMIN EVENT", "RA", $"{this.PTS(ev.Sender) ?? "Console"} run {ev.Name} with args ({string.Join(", ", ev.Arguments)}) with result: {(ev.Success ? "Success" : "Failure")}");
+            RLogger.Log("ADMIN EVENT", "RA", $"{this.PTS(ev.Sender) ?? "Console"} run {ev.Name} with args ({string.Join(", ", ev.Arguments)}) with result: {(ev.Success ? "Success" : "Failure")}");
         }
 
         private void Server_RespawningTeam(Exiled.Events.EventArgs.RespawningTeamEventArgs ev)
         {
-            RoundLogger.Log("GAME EVENT", "TEAM RESPAWN", $"Spawning {(ev.NextKnownTeam == Respawning.SpawnableTeamType.ChaosInsurgency ? "Chaos" : "MTF")}, {ev.Players.Count} players out of max {ev.MaximumRespawnAmount} ({(ev.IsAllowed ? "allowed" : "denied")})");
+            RLogger.Log("GAME EVENT", "TEAM RESPAWN", $"Spawning {(ev.NextKnownTeam == Respawning.SpawnableTeamType.ChaosInsurgency ? "Chaos" : "MTF")}, {ev.Players.Count} players out of max {ev.MaximumRespawnAmount} ({(ev.IsAllowed ? "allowed" : "denied")})");
         }
 
         private void Server_RoundStarted()
         {
-            RoundLogger.Log("GAME EVENT", "ROUND STARTED", $"Round has been started");
+            RLogger.Log("GAME EVENT", "ROUND STARTED", $"Round has been started");
         }
 
         private void Server_WaitingForPlayers()
         {
-            RoundLogger.Log("GAME EVENT", "ROUND READY", $"Waiting for players to join");
+            RLogger.Log("GAME EVENT", "ROUND READY", $"Waiting for players to join");
         }
 
         private void Server_RoundEnded(Exiled.Events.EventArgs.RoundEndedEventArgs ev)
         {
-            RoundLogger.Log("GAME EVENT", "ROUND END", $"Round has ended, {ev.LeadingTeam} won, restarting in {ev.TimeToRestart}s");
+            RLogger.Log("GAME EVENT", "ROUND END", $"Round has ended, {ev.LeadingTeam} won, restarting in {ev.TimeToRestart}s");
         }
 
         private void Warhead_Stopping(Exiled.Events.EventArgs.StoppingEventArgs ev)
         {
-            RoundLogger.Log("WARHEAD EVENT", "STOP", $"{this.PTS(ev.Player)} stoped warhead ({(ev.IsAllowed ? "allowed" : "denied")})");
+            RLogger.Log("WARHEAD EVENT", "STOP", $"{this.PTS(ev.Player)} stoped warhead ({(ev.IsAllowed ? "allowed" : "denied")})");
         }
 
         private void Warhead_Starting(Exiled.Events.EventArgs.StartingEventArgs ev)
         {
-            RoundLogger.Log("WARHEAD EVENT", "START", $"{this.PTS(ev.Player)} started warhead ({(ev.IsAllowed ? "allowed" : "denied")})");
+            RLogger.Log("WARHEAD EVENT", "START", $"{this.PTS(ev.Player)} started warhead ({(ev.IsAllowed ? "allowed" : "denied")})");
         }
 
         private void Warhead_Detonated()
         {
-            RoundLogger.Log("WARHEAD EVENT", "DETONATED", $"Warhead Detonated");
+            RLogger.Log("WARHEAD EVENT", "DETONATED", $"Warhead Detonated");
         }
 
         private void Scp096_Enraging(Exiled.Events.EventArgs.EnragingEventArgs ev)
         {
-            RoundLogger.Log("SCP096 EVENT", "ENRAGE", $"{this.PTS(ev.Player)} enraged {this.PTS(Player.Get(ev.Scp096.Hub))} ({(ev.IsAllowed ? "allowed" : "denied")})");
+            RLogger.Log("SCP096 EVENT", "ENRAGE", $"{this.PTS(ev.Player)} enraged {this.PTS(Player.Get(ev.Scp096.Hub))} ({(ev.IsAllowed ? "allowed" : "denied")})");
         }
 
         private void Scp096_AddingTarget(Exiled.Events.EventArgs.AddingTargetEventArgs ev)
         {
-            RoundLogger.Log("SCP096 EVENT", "ADD TARGET", $"{this.PTS(ev.Target)} is {this.PTS(ev.Scp096)}'s target ({(ev.IsAllowed ? "allowed" : "denied")})");
+            RLogger.Log("SCP096 EVENT", "ADD TARGET", $"{this.PTS(ev.Target)} is {this.PTS(ev.Scp096)}'s target ({(ev.IsAllowed ? "allowed" : "denied")})");
         }
 
         private void Scp079_InteractingTesla(Exiled.Events.EventArgs.InteractingTeslaEventArgs ev)
         {
-            RoundLogger.Log("SCP079 EVENT", "TESLA", $"{this.PTS(ev.Player)} trigered tesla ({(ev.IsAllowed ? "allowed" : "denied")})");
+            RLogger.Log("SCP079 EVENT", "TESLA", $"{this.PTS(ev.Player)} trigered tesla ({(ev.IsAllowed ? "allowed" : "denied")})");
         }
 
         private void Scp079_TriggeringDoor(Exiled.Events.EventArgs.TriggeringDoorEventArgs ev)
         {
-            RoundLogger.Log("SCP079 EVENT", "DOOR", $"{this.PTS(ev.Player)} interacted with door ({(ev.IsAllowed ? "allowed" : "denied")})");
+            RLogger.Log("SCP079 EVENT", "DOOR", $"{this.PTS(ev.Player)} interacted with door ({(ev.IsAllowed ? "allowed" : "denied")})");
         }
 
         private void Scp914_Activating(Exiled.Events.EventArgs.ActivatingEventArgs ev)
         {
-            RoundLogger.Log("SCP914 EVENT", "ACTIVATION", $"{this.PTS(ev.Player)} activated 914 ({(ev.IsAllowed ? "allowed" : "denied")})");
+            RLogger.Log("SCP914 EVENT", "ACTIVATION", $"{this.PTS(ev.Player)} activated 914 ({(ev.IsAllowed ? "allowed" : "denied")})");
         }
 
         private void Player_ReceivingEffect(Exiled.Events.EventArgs.ReceivingEffectEventArgs ev)
         {
-            RoundLogger.Log("GAME EVENT", "RECIVE EFFECT", $"Updated status of {ev.Effect.GetType().Name} for {this.PTS(ev.Player)} from {ev.CurrentState} to {ev.State}, duration: {ev.Duration}s ({(ev.IsAllowed ? "allowed" : "denied")})");
+            RLogger.Log("GAME EVENT", "RECIVE EFFECT", $"Updated status of {ev.Effect.GetType().Name} for {this.PTS(ev.Player)} from {ev.CurrentState} to {ev.State}, duration: {ev.Duration}s ({(ev.IsAllowed ? "allowed" : "denied")})");
         }
 
         private void Player_ActivatingWarheadPanel(Exiled.Events.EventArgs.ActivatingWarheadPanelEventArgs ev)
         {
-            RoundLogger.Log("WARHEAD EVENT", "PANEL", $"{this.PTS(ev.Player)} unlocked button ({(ev.IsAllowed ? "allowed" : "denied")})");
+            RLogger.Log("WARHEAD EVENT", "PANEL", $"{this.PTS(ev.Player)} unlocked button ({(ev.IsAllowed ? "allowed" : "denied")})");
         }
 
         private void Player_IntercomSpeaking(Exiled.Events.EventArgs.IntercomSpeakingEventArgs ev)
         {
-            RoundLogger.Log("GAME EVENT", "INTERCOM", $"{this.PTS(ev.Player)} is using intercom ({(ev.IsAllowed ? "allowed" : "disallowed")})");
+            RLogger.Log("GAME EVENT", "INTERCOM", $"{this.PTS(ev.Player)} is using intercom ({(ev.IsAllowed ? "allowed" : "disallowed")})");
         }
 
         private void Player_RemovingHandcuffs(Exiled.Events.EventArgs.RemovingHandcuffsEventArgs ev)
         {
-            RoundLogger.Log("GAME EVENT", "HANDCUFF", $"{this.PTS(ev.Target)} was uncuffed, cuffer was {this.PTS(ev.Cuffer)} ({(ev.IsAllowed ? "allowed" : "denied")})");
+            RLogger.Log("GAME EVENT", "HANDCUFF", $"{this.PTS(ev.Target)} was uncuffed, cuffer was {this.PTS(ev.Cuffer)} ({(ev.IsAllowed ? "allowed" : "denied")})");
         }
 
         private void Player_ThrowingGrenade(Exiled.Events.EventArgs.ThrowingGrenadeEventArgs ev)
         {
-            RoundLogger.Log("GAME EVENT", "GRENADE", $"{this.PTS(ev.Player)} thrown {ev.Type} {(ev.IsSlow ? "slowly " : string.Empty)}with fuse {ev.FuseTime} ({(ev.IsAllowed ? "allowed" : "denied")})");
+            RLogger.Log("GAME EVENT", "GRENADE", $"{this.PTS(ev.Player)} thrown {ev.Type} {(ev.IsSlow ? "slowly " : string.Empty)}with fuse {ev.FuseTime} ({(ev.IsAllowed ? "allowed" : "denied")})");
         }
 
         private void Player_Handcuffing(Exiled.Events.EventArgs.HandcuffingEventArgs ev)
         {
-            RoundLogger.Log("GAME EVENT", "HANDCUFF", $"{this.PTS(ev.Target)} was cuffed, by {this.PTS(ev.Cuffer)} ({(ev.IsAllowed ? "allowed" : "denied")})");
+            RLogger.Log("GAME EVENT", "HANDCUFF", $"{this.PTS(ev.Target)} was cuffed, by {this.PTS(ev.Cuffer)} ({(ev.IsAllowed ? "allowed" : "denied")})");
         }
 
         private void Player_ChangingGroup(Exiled.Events.EventArgs.ChangingGroupEventArgs ev)
         {
-            RoundLogger.Log("ADMIN EVENT", "CHANGE GROUP", $"{this.PTS(ev.Player)}'s group was changed to {ev.NewGroup?.BadgeText} ({(ev.IsAllowed ? "allowed" : "denied")})");
+            RLogger.Log("ADMIN EVENT", "CHANGE GROUP", $"{this.PTS(ev.Player)}'s group was changed to {ev.NewGroup?.BadgeText} ({(ev.IsAllowed ? "allowed" : "denied")})");
         }
 
         private void Player_ChangingRole(Exiled.Events.EventArgs.ChangingRoleEventArgs ev)
         {
-            RoundLogger.Log("GAME EVENT", "CLASS CHANGE", $"{this.PTS(ev.Player)} changed role from {ev.Player.Role} to {ev.NewRole} | Escape: {ev.IsEscaped}");
+            RLogger.Log("GAME EVENT", "CLASS CHANGE", $"{this.PTS(ev.Player)} changed role from {ev.Player.Role} to {ev.NewRole} | Escape: {ev.IsEscaped}");
         }
 
         private void Player_Escaping(Exiled.Events.EventArgs.EscapingEventArgs ev)
         {
-            RoundLogger.Log("GAME EVENT", "ESCAPE", $"{this.PTS(ev.Player)} escaped ({(ev.IsAllowed ? "allowed" : "denied")})");
+            RLogger.Log("GAME EVENT", "ESCAPE", $"{this.PTS(ev.Player)} escaped ({(ev.IsAllowed ? "allowed" : "denied")})");
         }
 
         private void CustomEvents_OnFirstTimeJoined(Events.EventArgs.FirstTimeJoinedEventArgs ev)
         {
-            RoundLogger.Log("NETWORK EVENT", "PLAYER JOINED", $"{this.PTS(ev.Player)} joined first time");
+            RLogger.Log("NETWORK EVENT", "PLAYER JOINED", $"{this.PTS(ev.Player)} joined first time");
         }
 
         private void Player_Destroying(Exiled.Events.EventArgs.DestroyingEventArgs ev)
         {
-            RoundLogger.Log("GAME EVENT", "PLAYER DESTROYED", $"{this.PTS(ev.Player)} was destroyed");
+            RLogger.Log("GAME EVENT", "PLAYER DESTROYED", $"{this.PTS(ev.Player)} was destroyed");
         }
 
         private void Player_Left(Exiled.Events.EventArgs.LeftEventArgs ev)
         {
-            RoundLogger.Log("NETWORK EVENT", "PLAYER LEFT", $"{this.PTS(ev.Player)} left");
+            RLogger.Log("NETWORK EVENT", "PLAYER LEFT", $"{this.PTS(ev.Player)} left");
         }
 
         private void Player_Verified(Exiled.Events.EventArgs.VerifiedEventArgs ev)
         {
-            RoundLogger.Log("NETWORK EVENT", "PLAYER VERIFIED", $"{this.PTS(ev.Player)} was verified");
+            RLogger.Log("NETWORK EVENT", "PLAYER VERIFIED", $"{this.PTS(ev.Player)} was verified");
         }
 
         private void Player_PreAuthenticating(Exiled.Events.EventArgs.PreAuthenticatingEventArgs ev)
         {
-            RoundLogger.Log("NETWORK EVENT", "PLAYER PREAUTHED", $"Preauthing {ev.UserId} from {ev.Request?.RemoteEndPoint?.Address?.ToString() ?? "NULL"} ({ev.Country}) with flags {ev.Flags}, {(ev.IsAllowed ? "allowed" : "denied")}");
+            RLogger.Log("NETWORK EVENT", "PLAYER PREAUTHED", $"Preauthing {ev.UserId} from {ev.Request?.RemoteEndPoint?.Address?.ToString() ?? "NULL"} ({ev.Country}) with flags {ev.Flags}, {(ev.IsAllowed ? "allowed" : "denied")}");
         }
 
         private void Player_Hurting(Exiled.Events.EventArgs.HurtingEventArgs ev)
@@ -318,29 +318,29 @@ namespace Mistaken.RoundLogger
             if (ev.Target.IsDead)
                 return;
             if (ev.DamageType == DamageTypes.Scp207)
-                RoundLogger.Log("GAME EVENT", "DAMAGE", $"{this.PTS(ev.Target)} was damaged by SCP-207 ({ev.Target.GetEffectIntensity<CustomPlayerEffects.Scp207>()})");
+                RLogger.Log("GAME EVENT", "DAMAGE", $"{this.PTS(ev.Target)} was damaged by SCP-207 ({ev.Target.GetEffectIntensity<CustomPlayerEffects.Scp207>()})");
             else if (ev.Target.Id == ev.Attacker?.Id)
-                RoundLogger.Log("GAME EVENT", "DAMAGE", $"{this.PTS(ev.Target)} hurt himself using {ev.DamageType.name}, done {ev.Amount} damage");
+                RLogger.Log("GAME EVENT", "DAMAGE", $"{this.PTS(ev.Target)} hurt himself using {ev.DamageType.name}, done {ev.Amount} damage");
             else
-                RoundLogger.Log("GAME EVENT", "DAMAGE", $"{this.PTS(ev.Target)} was hurt by {this.PTS(ev.Attacker) ?? "WORLD"} using {ev.DamageType.name}, done {ev.Amount} damage");
+                RLogger.Log("GAME EVENT", "DAMAGE", $"{this.PTS(ev.Target)} was hurt by {this.PTS(ev.Attacker) ?? "WORLD"} using {ev.DamageType.name}, done {ev.Amount} damage");
         }
 
         private void Player_Died(Exiled.Events.EventArgs.DiedEventArgs ev)
         {
             if (ev.Target.Id == ev.Killer?.Id)
-                RoundLogger.Log("GAME EVENT", "SUICIDE", $"{this.PTS(ev.Target)} killed himself using {ev.HitInformations.GetDamageName()}");
+                RLogger.Log("GAME EVENT", "SUICIDE", $"{this.PTS(ev.Target)} killed himself using {ev.HitInformations.GetDamageName()}");
             else
-                RoundLogger.Log("GAME EVENT", "KILL", $"{this.PTS(ev.Target)} was killed by {this.PTS(ev.Killer) ?? "WORLD"} using {ev.HitInformations.GetDamageName()}");
+                RLogger.Log("GAME EVENT", "KILL", $"{this.PTS(ev.Target)} was killed by {this.PTS(ev.Killer) ?? "WORLD"} using {ev.HitInformations.GetDamageName()}");
         }
 
         private void Player_Kicked(Exiled.Events.EventArgs.KickedEventArgs ev)
         {
-            RoundLogger.Log("ADMIN EVENT", "KICK", $"{this.PTS(ev.Target)} was kicked with reason {ev.Reason}");
+            RLogger.Log("ADMIN EVENT", "KICK", $"{this.PTS(ev.Target)} was kicked with reason {ev.Reason}");
         }
 
         private void Player_Banned(Exiled.Events.EventArgs.BannedEventArgs ev)
         {
-            RoundLogger.Log("ADMIN EVENT", "BAN", $"{this.PTS(ev.Target)} was banned by {this.PTS(ev.Issuer)} with reason {ev.Details.Reason}");
+            RLogger.Log("ADMIN EVENT", "BAN", $"{this.PTS(ev.Target)} was banned by {this.PTS(ev.Issuer)} with reason {ev.Details.Reason}");
         }
 
         private string PTS(Player player) => player.PlayerToString();
