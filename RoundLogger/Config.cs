@@ -4,7 +4,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using Mistaken.API;
+using System.ComponentModel;
+using Mistaken.Updater.Config;
 
 namespace Mistaken.RoundLogger
 {
@@ -12,21 +13,16 @@ namespace Mistaken.RoundLogger
     public class Config : IAutoUpdatableConfig
     {
         /// <inheritdoc/>
+        public bool IsEnabled { get; set; } = true;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether debug should be displayed.
+        /// </summary>
+        [Description("If true then debug will be displayed")]
         public bool VerbouseOutput { get; set; }
 
         /// <inheritdoc/>
-        public string AutoUpdateUrl { get; set; }
-
-        /// <inheritdoc/>
-        public AutoUpdateType AutoUpdateType { get; set; }
-
-        /// <inheritdoc/>
-        public string AutoUpdateLogin { get; set; }
-
-        /// <inheritdoc/>
-        public string AutoUpdateToken { get; set; }
-
-        /// <inheritdoc/>
-        public bool IsEnabled { get; set; } = true;
+        [Description("Auto Update Settings")]
+        public System.Collections.Generic.Dictionary<string, string> AutoUpdateConfig { get; set; }
     }
 }
