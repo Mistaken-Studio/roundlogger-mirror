@@ -31,6 +31,8 @@ namespace Mistaken.RoundLogger
         /// <param name="message">Message.</param>
         public static void Log(string module, string type, string message)
         {
+            if (!PluginHandler.Instance.Config.IsEnabled)
+                return;
             Logs.Add(new LogMessage(DateTime.Now, type, module, message.Replace("\n", "\\n")));
             if (module != "LOGGER")
                 Exiled.API.Features.Log.SendRaw($"[ROUND LOG] [{module}: {type}] {message}", ConsoleColor.DarkYellow);
@@ -137,7 +139,7 @@ namespace Mistaken.RoundLogger
             initiated = true;
             Exiled.API.Features.Log.Debug("Initiated RoundLogger");
             Exiled.Events.Handlers.Server.RestartingRound += Server_RestartingRound;
-            Log("INFO", "LOGGER", "Start of log");
+            Log("LOGGER", "INFO", "Start of log");
             beginLog = DateTime.Now;
         }
 
