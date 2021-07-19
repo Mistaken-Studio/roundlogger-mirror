@@ -23,7 +23,7 @@ namespace Mistaken.RoundLogger
         public override string Prefix => "MRL";
 
         /// <inheritdoc/>
-        public override PluginPriority Priority => PluginPriority.Higher;
+        public override PluginPriority Priority => PluginPriority.Low;
 
         /// <inheritdoc/>
         public override Version RequiredExiledVersion => new Version(2, 11, 0);
