@@ -31,7 +31,7 @@ namespace Mistaken.RoundLogger
         /// <param name="message">Message.</param>
         public static void Log(string module, string type, string message)
         {
-            if (!PluginHandler.Instance.Config.IsEnabled)
+            if (!(PluginHandler.Instance?.Config.IsEnabled ?? false))
                 return;
             Logs.Add(new LogMessage(DateTime.Now, type, module, message.Replace("\n", "\\n")));
             if (module != "LOGGER")
@@ -44,7 +44,7 @@ namespace Mistaken.RoundLogger
         /// <param name="player">Player.</param>
         /// <returns><paramref name="player"/> string version.</returns>
         public static string PlayerToString(this Player player)
-            => player == null ? null : $"{player.Nickname} (ID: {player.Id}|UID: {player.UserId}|Class: {player.Role}|Item: {(player.CurrentItemIndex == -1 ? "None" : player.CurrentItem.id.ToString())})";
+            => player == null ? null : $"{player.Nickname} (ID: {player.Id}|UID: {player.UserId}|Class: {player.Role}|Item: {(player.CurrentItemIndex == -1 ? "None" : player.CurrentItem.id.ToString())}{(player.IsConnected ? string.Empty : "|DISCONNECTED")})";
 
         /// <summary>
         /// Calls <see cref="Ini"/> if <see cref="initiated"/> is <see langword="false"/>.
