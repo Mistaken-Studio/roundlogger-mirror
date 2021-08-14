@@ -7,8 +7,10 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Reflection.Emit;
 using Exiled.API.Features;
 using Mistaken.API.Diagnostics;
+using UnityEngine;
 
 namespace Mistaken.RoundLogger
 {
@@ -71,6 +73,8 @@ namespace Mistaken.RoundLogger
                     Exiled.Events.Handlers.Player.PickingUpItem += this.Handle<Exiled.Events.EventArgs.PickingUpItemEventArgs>((ev) => this.Player_PickingUpItem(ev));
                     Exiled.Events.Handlers.Player.DroppingItem += this.Handle<Exiled.Events.EventArgs.DroppingItemEventArgs>((ev) => this.Player_DroppingItem(ev));
                     Exiled.Events.Handlers.Player.MedicalItemDequipped += this.Handle<Exiled.Events.EventArgs.DequippedMedicalItemEventArgs>((ev) => this.Player_MedicalItemDequipped(ev));
+
+                    API.AnnonymousEvents.Subscribe("VANISH", this.OnVanishUpdate); // (Player player, byte level)
                 },
                 "LateEnable");
         }
@@ -118,6 +122,17 @@ namespace Mistaken.RoundLogger
             Exiled.Events.Handlers.Player.PickingUpItem -= this.Handle<Exiled.Events.EventArgs.PickingUpItemEventArgs>((ev) => this.Player_PickingUpItem(ev));
             Exiled.Events.Handlers.Player.DroppingItem -= this.Handle<Exiled.Events.EventArgs.DroppingItemEventArgs>((ev) => this.Player_DroppingItem(ev));
             Exiled.Events.Handlers.Player.MedicalItemDequipped -= this.Handle<Exiled.Events.EventArgs.DequippedMedicalItemEventArgs>((ev) => this.Player_MedicalItemDequipped(ev));
+
+            API.AnnonymousEvents.UnSubscribe("VANISH", this.OnVanishUpdate); // (Player player, byte level)
+        }
+
+        private void OnVanishUpdate(object rawEv)
+        {
+            var ev = ((Player player, byte level))rawEv;
+            if (ev.level == 0)
+                RLogger.Log("VANISH", "DISABLE", $"Vanish enabled for {ev.player.PlayerToString()}, level {ev.level}");
+            else
+                RLogger.Log("VANISH", "ENABLE", $"Vanish disabled for {ev.player.PlayerToString()}");
         }
 
         private void RoundLogHandler_OnEnd(RLogger.LogMessage[] logs, DateTime roundStart)
