@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="RoundLogger.cs" company="Mistaken">
+// <copyright file="RLogger.cs" company="Mistaken">
 // Copyright (c) Mistaken. All rights reserved.
 // </copyright>
 // -----------------------------------------------------------------------
@@ -44,7 +44,7 @@ namespace Mistaken.RoundLogger
         /// <param name="player">Player.</param>
         /// <returns><paramref name="player"/> string version.</returns>
         public static string PlayerToString(this Player player)
-            => player == null ? null : $"{player.Nickname} (ID: {player.Id}|UID: {player.UserId}|Class: {player.Role}|Item: {(player.CurrentItemIndex == -1 ? "None" : player.CurrentItem.id.ToString())}{(player.IsConnected ? string.Empty : "|DISCONNECTED")})";
+            => player == null ? null : $"{player.Nickname} (ID: {player.Id}|UID: {player.UserId}|Class: {player.Role}|Item: {(player.CurrentItem == null ? "None" : player.CurrentItem.Type.ToString())}{(player.IsConnected ? string.Empty : "|DISCONNECTED")})";
 
         /// <summary>
         /// Calls <see cref="Ini"/> if <see cref="initiated"/> is <see langword="false"/>.
