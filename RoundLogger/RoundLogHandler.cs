@@ -7,8 +7,10 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Reflection.Emit;
 using Exiled.API.Features;
 using Mistaken.API.Diagnostics;
+using UnityEngine;
 
 namespace Mistaken.RoundLogger
 {
@@ -38,13 +40,13 @@ namespace Mistaken.RoundLogger
                     Exiled.Events.Handlers.Player.Hurting += this.Handle<Exiled.Events.EventArgs.HurtingEventArgs>((ev) => this.Player_Hurting(ev));
                     Exiled.Events.Handlers.Player.PreAuthenticating += this.Handle<Exiled.Events.EventArgs.PreAuthenticatingEventArgs>((ev) => this.Player_PreAuthenticating(ev));
                     Exiled.Events.Handlers.Player.Verified += this.Handle<Exiled.Events.EventArgs.VerifiedEventArgs>((ev) => this.Player_Verified(ev));
-                    Events.Handlers.CustomEvents.OnFirstTimeJoined += this.Handle<Events.EventArgs.FirstTimeJoinedEventArgs>((ev) => this.CustomEvents_OnFirstTimeJoined(ev));
                     Exiled.Events.Handlers.Player.Destroying += this.Handle<Exiled.Events.EventArgs.DestroyingEventArgs>((ev) => this.Player_Destroying(ev));
                     Exiled.Events.Handlers.Player.Left += this.Handle<Exiled.Events.EventArgs.LeftEventArgs>((ev) => this.Player_Left(ev));
                     Exiled.Events.Handlers.Player.Escaping += this.Handle<Exiled.Events.EventArgs.EscapingEventArgs>((ev) => this.Player_Escaping(ev));
                     Exiled.Events.Handlers.Player.ChangingRole += this.Handle<Exiled.Events.EventArgs.ChangingRoleEventArgs>((ev) => this.Player_ChangingRole(ev));
                     Exiled.Events.Handlers.Player.ChangingGroup += this.Handle<Exiled.Events.EventArgs.ChangingGroupEventArgs>((ev) => this.Player_ChangingGroup(ev));
-                    Exiled.Events.Handlers.Player.ThrowingGrenade += this.Handle<Exiled.Events.EventArgs.ThrowingGrenadeEventArgs>((ev) => this.Player_ThrowingGrenade(ev));
+
+                    // Exiled.Events.Handlers.Player.ThrowingGrenade += this.Handle<Exiled.Events.EventArgs.ThrowingGrenadeEventArgs>((ev) => this.Player_ThrowingGrenade(ev));
                     Exiled.Events.Handlers.Player.Handcuffing += this.Handle<Exiled.Events.EventArgs.HandcuffingEventArgs>((ev) => this.Player_Handcuffing(ev));
                     Exiled.Events.Handlers.Player.RemovingHandcuffs += this.Handle<Exiled.Events.EventArgs.RemovingHandcuffsEventArgs>((ev) => this.Player_RemovingHandcuffs(ev));
                     Exiled.Events.Handlers.Player.IntercomSpeaking += this.Handle<Exiled.Events.EventArgs.IntercomSpeakingEventArgs>((ev) => this.Player_IntercomSpeaking(ev));
@@ -62,15 +64,13 @@ namespace Mistaken.RoundLogger
                     Exiled.Events.Handlers.Server.WaitingForPlayers += this.Handle(() => this.Server_WaitingForPlayers(), "WaitingForPlayers");
                     Exiled.Events.Handlers.Server.RoundStarted += this.Handle(() => this.Server_RoundStarted(), "RoundStart");
                     Exiled.Events.Handlers.Server.RespawningTeam += this.Handle<Exiled.Events.EventArgs.RespawningTeamEventArgs>((ev) => this.Server_RespawningTeam(ev));
-                    Exiled.Events.Handlers.Server.SendingRemoteAdminCommand += this.Handle<Exiled.Events.EventArgs.SendingRemoteAdminCommandEventArgs>((ev) => this.Server_SendingRemoteAdminCommand(ev));
-                    Exiled.Events.Handlers.Server.SendingConsoleCommand += this.Handle<Exiled.Events.EventArgs.SendingConsoleCommandEventArgs>((ev) => this.Server_SendingConsoleCommand(ev));
                     Exiled.Events.Handlers.Map.Decontaminating += this.Handle<Exiled.Events.EventArgs.DecontaminatingEventArgs>((ev) => this.Map_Decontaminating(ev));
                     Exiled.Events.Handlers.Map.GeneratorActivated += this.Handle<Exiled.Events.EventArgs.GeneratorActivatedEventArgs>((ev) => this.Map_GeneratorActivated(ev));
                     Exiled.Events.Handlers.Map.ExplodingGrenade += this.Handle<Exiled.Events.EventArgs.ExplodingGrenadeEventArgs>((ev) => this.Map_ExplodingGrenade(ev));
-                    Events.Handlers.CustomEvents.OnBroadcast += this.Handle<Events.EventArgs.BroadcastEventArgs>((ev) => this.CustomEvents_OnBroadcast(ev));
                     Exiled.Events.Handlers.Player.PickingUpItem += this.Handle<Exiled.Events.EventArgs.PickingUpItemEventArgs>((ev) => this.Player_PickingUpItem(ev));
                     Exiled.Events.Handlers.Player.DroppingItem += this.Handle<Exiled.Events.EventArgs.DroppingItemEventArgs>((ev) => this.Player_DroppingItem(ev));
-                    Exiled.Events.Handlers.Player.MedicalItemDequipped += this.Handle<Exiled.Events.EventArgs.DequippedMedicalItemEventArgs>((ev) => this.Player_MedicalItemDequipped(ev));
+
+                    API.AnnonymousEvents.Subscribe("VANISH", this.OnVanishUpdate); // (Player player, byte level)
                 },
                 "LateEnable");
         }
@@ -83,13 +83,13 @@ namespace Mistaken.RoundLogger
             Exiled.Events.Handlers.Player.Hurting -= this.Handle<Exiled.Events.EventArgs.HurtingEventArgs>((ev) => this.Player_Hurting(ev));
             Exiled.Events.Handlers.Player.PreAuthenticating -= this.Handle<Exiled.Events.EventArgs.PreAuthenticatingEventArgs>((ev) => this.Player_PreAuthenticating(ev));
             Exiled.Events.Handlers.Player.Verified -= this.Handle<Exiled.Events.EventArgs.VerifiedEventArgs>((ev) => this.Player_Verified(ev));
-            Events.Handlers.CustomEvents.OnFirstTimeJoined -= this.Handle<Events.EventArgs.FirstTimeJoinedEventArgs>((ev) => this.CustomEvents_OnFirstTimeJoined(ev));
             Exiled.Events.Handlers.Player.Destroying -= this.Handle<Exiled.Events.EventArgs.DestroyingEventArgs>((ev) => this.Player_Destroying(ev));
             Exiled.Events.Handlers.Player.Left -= this.Handle<Exiled.Events.EventArgs.LeftEventArgs>((ev) => this.Player_Left(ev));
             Exiled.Events.Handlers.Player.Escaping -= this.Handle<Exiled.Events.EventArgs.EscapingEventArgs>((ev) => this.Player_Escaping(ev));
             Exiled.Events.Handlers.Player.ChangingRole -= this.Handle<Exiled.Events.EventArgs.ChangingRoleEventArgs>((ev) => this.Player_ChangingRole(ev));
             Exiled.Events.Handlers.Player.ChangingGroup -= this.Handle<Exiled.Events.EventArgs.ChangingGroupEventArgs>((ev) => this.Player_ChangingGroup(ev));
-            Exiled.Events.Handlers.Player.ThrowingGrenade -= this.Handle<Exiled.Events.EventArgs.ThrowingGrenadeEventArgs>((ev) => this.Player_ThrowingGrenade(ev));
+
+            // Exiled.Events.Handlers.Player.ThrowingGrenade -= this.Handle<Exiled.Events.EventArgs.ThrowingGrenadeEventArgs>((ev) => this.Player_ThrowingGrenade(ev));
             Exiled.Events.Handlers.Player.Handcuffing -= this.Handle<Exiled.Events.EventArgs.HandcuffingEventArgs>((ev) => this.Player_Handcuffing(ev));
             Exiled.Events.Handlers.Player.RemovingHandcuffs -= this.Handle<Exiled.Events.EventArgs.RemovingHandcuffsEventArgs>((ev) => this.Player_RemovingHandcuffs(ev));
             Exiled.Events.Handlers.Player.IntercomSpeaking -= this.Handle<Exiled.Events.EventArgs.IntercomSpeakingEventArgs>((ev) => this.Player_IntercomSpeaking(ev));
@@ -107,17 +107,21 @@ namespace Mistaken.RoundLogger
             Exiled.Events.Handlers.Server.WaitingForPlayers -= this.Handle(() => this.Server_WaitingForPlayers(), "WaitingForPlayers");
             Exiled.Events.Handlers.Server.RoundStarted -= this.Handle(() => this.Server_RoundStarted(), "RoundStart");
             Exiled.Events.Handlers.Server.RespawningTeam -= this.Handle<Exiled.Events.EventArgs.RespawningTeamEventArgs>((ev) => this.Server_RespawningTeam(ev));
-            Exiled.Events.Handlers.Server.SendingRemoteAdminCommand -= this.Handle<Exiled.Events.EventArgs.SendingRemoteAdminCommandEventArgs>((ev) => this.Server_SendingRemoteAdminCommand(ev));
-            Exiled.Events.Handlers.Server.SendingConsoleCommand -= this.Handle<Exiled.Events.EventArgs.SendingConsoleCommandEventArgs>((ev) => this.Server_SendingConsoleCommand(ev));
             Exiled.Events.Handlers.Map.Decontaminating -= this.Handle<Exiled.Events.EventArgs.DecontaminatingEventArgs>((ev) => this.Map_Decontaminating(ev));
             Exiled.Events.Handlers.Map.GeneratorActivated -= this.Handle<Exiled.Events.EventArgs.GeneratorActivatedEventArgs>((ev) => this.Map_GeneratorActivated(ev));
             Exiled.Events.Handlers.Map.ExplodingGrenade -= this.Handle<Exiled.Events.EventArgs.ExplodingGrenadeEventArgs>((ev) => this.Map_ExplodingGrenade(ev));
-            Exiled.Events.Handlers.Server.SendingRemoteAdminCommand -= this.Handle<Exiled.Events.EventArgs.SendingRemoteAdminCommandEventArgs>((ev) => this.Server_SendingRemoteAdminCommand(ev));
-            Exiled.Events.Handlers.Server.SendingConsoleCommand -= this.Handle<Exiled.Events.EventArgs.SendingConsoleCommandEventArgs>((ev) => this.Server_SendingConsoleCommand(ev));
-            Events.Handlers.CustomEvents.OnBroadcast -= this.Handle<Events.EventArgs.BroadcastEventArgs>((ev) => this.CustomEvents_OnBroadcast(ev));
             Exiled.Events.Handlers.Player.PickingUpItem -= this.Handle<Exiled.Events.EventArgs.PickingUpItemEventArgs>((ev) => this.Player_PickingUpItem(ev));
             Exiled.Events.Handlers.Player.DroppingItem -= this.Handle<Exiled.Events.EventArgs.DroppingItemEventArgs>((ev) => this.Player_DroppingItem(ev));
-            Exiled.Events.Handlers.Player.MedicalItemDequipped -= this.Handle<Exiled.Events.EventArgs.DequippedMedicalItemEventArgs>((ev) => this.Player_MedicalItemDequipped(ev));
+            API.AnnonymousEvents.UnSubscribe("VANISH", this.OnVanishUpdate); // (Player player, byte level)
+        }
+
+        private void OnVanishUpdate(object rawEv)
+        {
+            var ev = ((Player player, byte level))rawEv;
+            if (ev.level == 0)
+                RLogger.Log("VANISH", "DISABLE", $"Vanish enabled for {ev.player.PlayerToString()}, level {ev.level}");
+            else
+                RLogger.Log("VANISH", "ENABLE", $"Vanish disabled for {ev.player.PlayerToString()}");
         }
 
         private void RoundLogHandler_OnEnd(RLogger.LogMessage[] logs, DateTime roundStart)
@@ -131,56 +135,29 @@ namespace Mistaken.RoundLogger
             File.AppendAllLines(dir + $"{roundStart:yyyy-MM-dd_HH-mm-ss}.log", logs.Select(i => i.ToString()));
         }
 
-        private void Player_MedicalItemDequipped(Exiled.Events.EventArgs.DequippedMedicalItemEventArgs ev)
-        {
-            RLogger.Log("GAME EVENT", "MEDICAL", $"{ev.Player.PlayerToString()} used {ev.Item}");
-        }
-
         private void Player_DroppingItem(Exiled.Events.EventArgs.DroppingItemEventArgs ev)
         {
-            RLogger.Log("GAME EVENT", "ITEM", $"{ev.Player.PlayerToString()} dropped {ev.Item.id} (Durability: {ev.Item.durability}) with result: {(ev.IsAllowed ? "Allowed" : "Disallowed")}");
+            RLogger.Log("GAME EVENT", "ITEM", $"{ev.Player.PlayerToString()} dropped {ev.Item.Type} with result: {(ev.IsAllowed ? "Allowed" : "Disallowed")}");
         }
 
         private void Player_PickingUpItem(Exiled.Events.EventArgs.PickingUpItemEventArgs ev)
         {
-            RLogger.Log("GAME EVENT", "ITEM", $"{ev.Player.PlayerToString()} picked up {ev.Pickup.ItemId} (Durability: {ev.Pickup.durability}) with result: {(ev.IsAllowed ? "Allowed" : "Disallowed")}");
-        }
-
-        private void CustomEvents_OnBroadcast(Events.EventArgs.BroadcastEventArgs ev)
-        {
-            if (ev.Type == Broadcast.BroadcastFlags.AdminChat)
-            {
-                RLogger.Log("ADMIN EVENT", "ADMIN CHAT", $"{ev.AdminName} sent \"{ev.Content}\"");
-            }
-            else
-            {
-                RLogger.Log("GAME EVENT", "BROADCAST", $"Broadcasted \"{ev.Content}\" to {ev.Targets.Length} players");
-            }
+            RLogger.Log("GAME EVENT", "ITEM", $"{ev.Player.PlayerToString()} picked up {ev.Pickup.Type} with result: {(ev.IsAllowed ? "Allowed" : "Disallowed")}");
         }
 
         private void Map_GeneratorActivated(Exiled.Events.EventArgs.GeneratorActivatedEventArgs ev)
         {
-            RLogger.Log("GAME EVENT", "GENERATOR", $"Generator in {ev.Generator.CurRoom} activated");
+            RLogger.Log("GAME EVENT", "GENERATOR", $"Generator activated");
         }
 
         private void Map_ExplodingGrenade(Exiled.Events.EventArgs.ExplodingGrenadeEventArgs ev)
         {
-            RLogger.Log("GAME EVENT", "GRENADE", $"{this.PTS(ev.Thrower)}'s {(ev.IsFrag ? "Frag" : "Flash")} exploading on {ev.TargetToDamages.Count} target ({(ev.IsAllowed ? "allowed" : "denied")})");
+            RLogger.Log("GAME EVENT", "GRENADE", $"{this.PTS(ev.Thrower)}'s {(ev.IsFrag ? "Frag" : "Flash")} exploading on {ev.TargetsToAffect.Count} target ({(ev.IsAllowed ? "allowed" : "denied")})");
         }
 
         private void Map_Decontaminating(Exiled.Events.EventArgs.DecontaminatingEventArgs ev)
         {
             RLogger.Log("GAME EVENT", "DECONTAMINATION", $"Decontamination finished ({(ev.IsAllowed ? "allowed" : "denied")})");
-        }
-
-        private void Server_SendingConsoleCommand(Exiled.Events.EventArgs.SendingConsoleCommandEventArgs ev)
-        {
-            RLogger.Log("GAME EVENT", "CONSOLE", $"{this.PTS(ev.Player)} run {ev.Name} with args ({string.Join(", ", ev.Arguments)}) with result: {(ev.IsAllowed ? "Allowed" : "Disallowed")}");
-        }
-
-        private void Server_SendingRemoteAdminCommand(Exiled.Events.EventArgs.SendingRemoteAdminCommandEventArgs ev)
-        {
-            RLogger.Log("ADMIN EVENT", "RA", $"{this.PTS(ev.Sender) ?? "Console"} run {ev.Name} with args ({string.Join(", ", ev.Arguments)}) with result: {(ev.Success ? "Success" : "Failure")}");
         }
 
         private void Server_RespawningTeam(Exiled.Events.EventArgs.RespawningTeamEventArgs ev)
@@ -263,10 +240,10 @@ namespace Mistaken.RoundLogger
             RLogger.Log("GAME EVENT", "HANDCUFF", $"{this.PTS(ev.Target)} was uncuffed, cuffer was {this.PTS(ev.Cuffer)} ({(ev.IsAllowed ? "allowed" : "denied")})");
         }
 
-        private void Player_ThrowingGrenade(Exiled.Events.EventArgs.ThrowingGrenadeEventArgs ev)
+        /*private void Player_ThrowingGrenade(Exiled.Events.EventArgs.ThrowingGrenadeEventArgs ev)
         {
             RLogger.Log("GAME EVENT", "GRENADE", $"{this.PTS(ev.Player)} thrown {ev.Type} {(ev.IsSlow ? "slowly " : string.Empty)}with fuse {ev.FuseTime} ({(ev.IsAllowed ? "allowed" : "denied")})");
-        }
+        }*/
 
         private void Player_Handcuffing(Exiled.Events.EventArgs.HandcuffingEventArgs ev)
         {
@@ -280,17 +257,12 @@ namespace Mistaken.RoundLogger
 
         private void Player_ChangingRole(Exiled.Events.EventArgs.ChangingRoleEventArgs ev)
         {
-            RLogger.Log("GAME EVENT", "CLASS CHANGE", $"{this.PTS(ev.Player)} changed role from {ev.Player.Role} to {ev.NewRole} | Escape: {ev.IsEscaped}");
+            RLogger.Log("GAME EVENT", "CLASS CHANGE", $"{this.PTS(ev.Player)} changed role from {ev.Player.Role} to {ev.NewRole} | Reason: {ev.Reason}");
         }
 
         private void Player_Escaping(Exiled.Events.EventArgs.EscapingEventArgs ev)
         {
             RLogger.Log("GAME EVENT", "ESCAPE", $"{this.PTS(ev.Player)} escaped ({(ev.IsAllowed ? "allowed" : "denied")})");
-        }
-
-        private void CustomEvents_OnFirstTimeJoined(Events.EventArgs.FirstTimeJoinedEventArgs ev)
-        {
-            RLogger.Log("NETWORK EVENT", "PLAYER JOINED", $"{this.PTS(ev.Player)} joined first time");
         }
 
         private void Player_Destroying(Exiled.Events.EventArgs.DestroyingEventArgs ev)
@@ -320,17 +292,17 @@ namespace Mistaken.RoundLogger
             if (ev.DamageType == DamageTypes.Scp207)
                 RLogger.Log("GAME EVENT", "DAMAGE", $"{this.PTS(ev.Target)} was damaged by SCP-207 ({ev.Target.GetEffectIntensity<CustomPlayerEffects.Scp207>()})");
             else if (ev.Target.Id == ev.Attacker?.Id)
-                RLogger.Log("GAME EVENT", "DAMAGE", $"{this.PTS(ev.Target)} hurt himself using {ev.DamageType.name}, done {ev.Amount} damage");
+                RLogger.Log("GAME EVENT", "DAMAGE", $"{this.PTS(ev.Target)} hurt himself using {ev.DamageType.Name}, done {ev.Amount} damage");
             else
-                RLogger.Log("GAME EVENT", "DAMAGE", $"{this.PTS(ev.Target)} was hurt by {this.PTS(ev.Attacker) ?? "WORLD"} using {ev.DamageType.name}, done {ev.Amount} damage");
+                RLogger.Log("GAME EVENT", "DAMAGE", $"{this.PTS(ev.Target)} was hurt by {this.PTS(ev.Attacker) ?? "WORLD"} using {ev.DamageType.Name}, done {ev.Amount} damage");
         }
 
         private void Player_Died(Exiled.Events.EventArgs.DiedEventArgs ev)
         {
             if (ev.Target.Id == ev.Killer?.Id)
-                RLogger.Log("GAME EVENT", "SUICIDE", $"{this.PTS(ev.Target)} killed himself using {ev.HitInformations.GetDamageName()}");
+                RLogger.Log("GAME EVENT", "SUICIDE", $"{this.PTS(ev.Target)} killed himself using {ev.HitInformations.Tool.Name}");
             else
-                RLogger.Log("GAME EVENT", "KILL", $"{this.PTS(ev.Target)} was killed by {this.PTS(ev.Killer) ?? "WORLD"} using {ev.HitInformations.GetDamageName()}");
+                RLogger.Log("GAME EVENT", "KILL", $"{this.PTS(ev.Target)} was killed by {this.PTS(ev.Killer) ?? "WORLD"} using {ev.HitInformations.Tool.Name}");
         }
 
         private void Player_Kicked(Exiled.Events.EventArgs.KickedEventArgs ev)
