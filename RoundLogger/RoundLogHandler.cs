@@ -8,6 +8,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Reflection.Emit;
+using CustomPlayerEffects;
 using Exiled.API.Features;
 using Mistaken.API.Diagnostics;
 using UnityEngine;
@@ -222,6 +223,8 @@ namespace Mistaken.RoundLogger
 
         private void Player_ReceivingEffect(Exiled.Events.EventArgs.ReceivingEffectEventArgs ev)
         {
+            if (ev.Effect.GetType() == typeof(Stained))
+                return;
             RLogger.Log("GAME EVENT", "RECIVE EFFECT", $"Updated status of {ev.Effect.GetType().Name} for {this.PTS(ev.Player)} from {ev.CurrentState} to {ev.State}, duration: {ev.Duration}s ({(ev.IsAllowed ? "allowed" : "denied")})");
         }
 
