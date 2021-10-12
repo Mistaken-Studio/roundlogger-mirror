@@ -34,7 +34,7 @@ namespace Mistaken.RoundLogger
             if (!(PluginHandler.Instance?.Config.IsEnabled ?? false))
                 return;
             Logs.Add(new LogMessage(DateTime.Now, type, module, message.Replace("\n", "\\n")));
-            if (module != "LOGGER")
+            if (module != "LOGGER" && PluginHandler.Instance.Config.ShowRoundLogsInGameConsole)
                 Exiled.API.Features.Log.SendRaw($"[ROUND LOG] [{module}: {type}] {message}", ConsoleColor.DarkYellow);
         }
 
