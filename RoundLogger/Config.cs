@@ -16,6 +16,12 @@ namespace Mistaken.RoundLogger
         public bool IsEnabled { get; set; } = true;
 
         /// <summary>
+        /// Gets or sets a value indicating whether logs should be shown in real time in game console.
+        /// </summary>
+        [Description("If true then logs will be shown in real time in game console")]
+        public bool ShowRoundLogsInGameConsole { get; set; } = true;
+
+        /// <summary>
         /// Gets or sets a value indicating whether debug should be displayed.
         /// </summary>
         [Description("If true then debug will be displayed")]
