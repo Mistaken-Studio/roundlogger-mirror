@@ -290,7 +290,7 @@ namespace Mistaken.RoundLogger
 
         private void Player_Hurting(Exiled.Events.EventArgs.HurtingEventArgs ev)
         {
-            if (ev.Target.IsDead)
+            if (ev.Target.IsDead || ev.Target.IsGodModeEnabled)
                 return;
             if (ev.DamageType == DamageTypes.Scp207)
                 RLogger.Log("GAME EVENT", "DAMAGE", $"{this.PTS(ev.Target)} was damaged by SCP-207 ({ev.Target.GetEffectIntensity<CustomPlayerEffects.Scp207>()})");
