@@ -35,41 +35,41 @@ namespace Mistaken.RoundLogger
                 1.5f,
                 () =>
                 {
-                    Exiled.Events.Handlers.Player.Banned += this.Handle<Exiled.Events.EventArgs.BannedEventArgs>((ev) => this.Player_Banned(ev));
-                    Exiled.Events.Handlers.Player.Kicked += this.Handle<Exiled.Events.EventArgs.KickedEventArgs>((ev) => this.Player_Kicked(ev));
-                    Exiled.Events.Handlers.Player.Died += this.Handle<Exiled.Events.EventArgs.DiedEventArgs>((ev) => this.Player_Died(ev));
-                    Exiled.Events.Handlers.Player.Hurting += this.Handle<Exiled.Events.EventArgs.HurtingEventArgs>((ev) => this.Player_Hurting(ev));
-                    Exiled.Events.Handlers.Player.PreAuthenticating += this.Handle<Exiled.Events.EventArgs.PreAuthenticatingEventArgs>((ev) => this.Player_PreAuthenticating(ev));
-                    Exiled.Events.Handlers.Player.Verified += this.Handle<Exiled.Events.EventArgs.VerifiedEventArgs>((ev) => this.Player_Verified(ev));
-                    Exiled.Events.Handlers.Player.Destroying += this.Handle<Exiled.Events.EventArgs.DestroyingEventArgs>((ev) => this.Player_Destroying(ev));
-                    Exiled.Events.Handlers.Player.Left += this.Handle<Exiled.Events.EventArgs.LeftEventArgs>((ev) => this.Player_Left(ev));
-                    Exiled.Events.Handlers.Player.Escaping += this.Handle<Exiled.Events.EventArgs.EscapingEventArgs>((ev) => this.Player_Escaping(ev));
-                    Exiled.Events.Handlers.Player.ChangingRole += this.Handle<Exiled.Events.EventArgs.ChangingRoleEventArgs>((ev) => this.Player_ChangingRole(ev));
-                    Exiled.Events.Handlers.Player.ChangingGroup += this.Handle<Exiled.Events.EventArgs.ChangingGroupEventArgs>((ev) => this.Player_ChangingGroup(ev));
+                    Exiled.Events.Handlers.Player.Banned += this.Player_Banned;
+                    Exiled.Events.Handlers.Player.Kicked += this.Player_Kicked;
+                    Exiled.Events.Handlers.Player.Died += this.Player_Died;
+                    Exiled.Events.Handlers.Player.Hurting += this.Player_Hurting;
+                    Exiled.Events.Handlers.Player.PreAuthenticating += this.Player_PreAuthenticating;
+                    Exiled.Events.Handlers.Player.Verified += this.Player_Verified;
+                    Exiled.Events.Handlers.Player.Destroying += this.Player_Destroying;
+                    Exiled.Events.Handlers.Player.Left += this.Player_Left;
+                    Exiled.Events.Handlers.Player.Escaping += this.Player_Escaping;
+                    Exiled.Events.Handlers.Player.ChangingRole += this.Player_ChangingRole;
+                    Exiled.Events.Handlers.Player.ChangingGroup += this.Player_ChangingGroup;
 
                     // Exiled.Events.Handlers.Player.ThrowingGrenade += this.Handle<Exiled.Events.EventArgs.ThrowingGrenadeEventArgs>((ev) => this.Player_ThrowingGrenade(ev));
-                    Exiled.Events.Handlers.Player.Handcuffing += this.Handle<Exiled.Events.EventArgs.HandcuffingEventArgs>((ev) => this.Player_Handcuffing(ev));
-                    Exiled.Events.Handlers.Player.RemovingHandcuffs += this.Handle<Exiled.Events.EventArgs.RemovingHandcuffsEventArgs>((ev) => this.Player_RemovingHandcuffs(ev));
-                    Exiled.Events.Handlers.Player.IntercomSpeaking += this.Handle<Exiled.Events.EventArgs.IntercomSpeakingEventArgs>((ev) => this.Player_IntercomSpeaking(ev));
-                    Exiled.Events.Handlers.Player.ActivatingWarheadPanel += this.Handle<Exiled.Events.EventArgs.ActivatingWarheadPanelEventArgs>((ev) => this.Player_ActivatingWarheadPanel(ev));
-                    Exiled.Events.Handlers.Player.ReceivingEffect += this.Handle<Exiled.Events.EventArgs.ReceivingEffectEventArgs>((ev) => this.Player_ReceivingEffect(ev));
-                    Exiled.Events.Handlers.Scp914.Activating += this.Handle<Exiled.Events.EventArgs.ActivatingEventArgs>((ev) => this.Scp914_Activating(ev));
-                    Exiled.Events.Handlers.Scp079.TriggeringDoor += this.Handle<Exiled.Events.EventArgs.TriggeringDoorEventArgs>((ev) => this.Scp079_TriggeringDoor(ev));
-                    Exiled.Events.Handlers.Scp079.InteractingTesla += this.Handle<Exiled.Events.EventArgs.InteractingTeslaEventArgs>((ev) => this.Scp079_InteractingTesla(ev));
-                    Exiled.Events.Handlers.Scp096.AddingTarget += this.Handle<Exiled.Events.EventArgs.AddingTargetEventArgs>((ev) => this.Scp096_AddingTarget(ev));
-                    Exiled.Events.Handlers.Scp096.Enraging += this.Handle<Exiled.Events.EventArgs.EnragingEventArgs>((ev) => this.Scp096_Enraging(ev));
-                    Exiled.Events.Handlers.Warhead.Detonated += this.Handle(() => this.Warhead_Detonated(), "WarheadDetonated");
-                    Exiled.Events.Handlers.Warhead.Starting += this.Handle<Exiled.Events.EventArgs.StartingEventArgs>((ev) => this.Warhead_Starting(ev));
-                    Exiled.Events.Handlers.Warhead.Stopping += this.Handle<Exiled.Events.EventArgs.StoppingEventArgs>((ev) => this.Warhead_Stopping(ev));
-                    Exiled.Events.Handlers.Server.RoundEnded += this.Handle<Exiled.Events.EventArgs.RoundEndedEventArgs>((ev) => this.Server_RoundEnded(ev));
-                    Exiled.Events.Handlers.Server.WaitingForPlayers += this.Handle(() => this.Server_WaitingForPlayers(), "WaitingForPlayers");
-                    Exiled.Events.Handlers.Server.RoundStarted += this.Handle(() => this.Server_RoundStarted(), "RoundStart");
-                    Exiled.Events.Handlers.Server.RespawningTeam += this.Handle<Exiled.Events.EventArgs.RespawningTeamEventArgs>((ev) => this.Server_RespawningTeam(ev));
-                    Exiled.Events.Handlers.Map.Decontaminating += this.Handle<Exiled.Events.EventArgs.DecontaminatingEventArgs>((ev) => this.Map_Decontaminating(ev));
-                    Exiled.Events.Handlers.Map.GeneratorActivated += this.Handle<Exiled.Events.EventArgs.GeneratorActivatedEventArgs>((ev) => this.Map_GeneratorActivated(ev));
-                    Exiled.Events.Handlers.Map.ExplodingGrenade += this.Handle<Exiled.Events.EventArgs.ExplodingGrenadeEventArgs>((ev) => this.Map_ExplodingGrenade(ev));
-                    Exiled.Events.Handlers.Player.PickingUpItem += this.Handle<Exiled.Events.EventArgs.PickingUpItemEventArgs>((ev) => this.Player_PickingUpItem(ev));
-                    Exiled.Events.Handlers.Player.DroppingItem += this.Handle<Exiled.Events.EventArgs.DroppingItemEventArgs>((ev) => this.Player_DroppingItem(ev));
+                    Exiled.Events.Handlers.Player.Handcuffing += this.Player_Handcuffing;
+                    Exiled.Events.Handlers.Player.RemovingHandcuffs += this.Player_RemovingHandcuffs;
+                    Exiled.Events.Handlers.Player.IntercomSpeaking += this.Player_IntercomSpeaking;
+                    Exiled.Events.Handlers.Player.ActivatingWarheadPanel += this.Player_ActivatingWarheadPanel;
+                    Exiled.Events.Handlers.Player.ReceivingEffect += this.Player_ReceivingEffect;
+                    Exiled.Events.Handlers.Scp914.Activating += this.Scp914_Activating;
+                    Exiled.Events.Handlers.Scp079.TriggeringDoor += this.Scp079_TriggeringDoor;
+                    Exiled.Events.Handlers.Scp079.InteractingTesla += this.Scp079_InteractingTesla;
+                    Exiled.Events.Handlers.Scp096.AddingTarget += this.Scp096_AddingTarget;
+                    Exiled.Events.Handlers.Scp096.Enraging += this.Scp096_Enraging;
+                    Exiled.Events.Handlers.Warhead.Detonated += this.Warhead_Detonated;
+                    Exiled.Events.Handlers.Warhead.Starting += this.Warhead_Starting;
+                    Exiled.Events.Handlers.Warhead.Stopping += this.Warhead_Stopping;
+                    Exiled.Events.Handlers.Server.RoundEnded += this.Server_RoundEnded;
+                    Exiled.Events.Handlers.Server.WaitingForPlayers += this.Server_WaitingForPlayers;
+                    Exiled.Events.Handlers.Server.RoundStarted += this.Server_RoundStarted;
+                    Exiled.Events.Handlers.Server.RespawningTeam += this.Server_RespawningTeam;
+                    Exiled.Events.Handlers.Map.Decontaminating += this.Map_Decontaminating;
+                    Exiled.Events.Handlers.Map.GeneratorActivated += this.Map_GeneratorActivated;
+                    Exiled.Events.Handlers.Map.ExplodingGrenade += this.Map_ExplodingGrenade;
+                    Exiled.Events.Handlers.Player.PickingUpItem += this.Player_PickingUpItem;
+                    Exiled.Events.Handlers.Player.DroppingItem += this.Player_DroppingItem;
 
                     API.AnnonymousEvents.Subscribe("VANISH", this.OnVanishUpdate); // (Player player, byte level)
                 },
@@ -78,41 +78,41 @@ namespace Mistaken.RoundLogger
 
         public override void OnDisable()
         {
-            Exiled.Events.Handlers.Player.Banned -= this.Handle<Exiled.Events.EventArgs.BannedEventArgs>((ev) => this.Player_Banned(ev));
-            Exiled.Events.Handlers.Player.Kicked -= this.Handle<Exiled.Events.EventArgs.KickedEventArgs>((ev) => this.Player_Kicked(ev));
-            Exiled.Events.Handlers.Player.Died -= this.Handle<Exiled.Events.EventArgs.DiedEventArgs>((ev) => this.Player_Died(ev));
-            Exiled.Events.Handlers.Player.Hurting -= this.Handle<Exiled.Events.EventArgs.HurtingEventArgs>((ev) => this.Player_Hurting(ev));
-            Exiled.Events.Handlers.Player.PreAuthenticating -= this.Handle<Exiled.Events.EventArgs.PreAuthenticatingEventArgs>((ev) => this.Player_PreAuthenticating(ev));
-            Exiled.Events.Handlers.Player.Verified -= this.Handle<Exiled.Events.EventArgs.VerifiedEventArgs>((ev) => this.Player_Verified(ev));
-            Exiled.Events.Handlers.Player.Destroying -= this.Handle<Exiled.Events.EventArgs.DestroyingEventArgs>((ev) => this.Player_Destroying(ev));
-            Exiled.Events.Handlers.Player.Left -= this.Handle<Exiled.Events.EventArgs.LeftEventArgs>((ev) => this.Player_Left(ev));
-            Exiled.Events.Handlers.Player.Escaping -= this.Handle<Exiled.Events.EventArgs.EscapingEventArgs>((ev) => this.Player_Escaping(ev));
-            Exiled.Events.Handlers.Player.ChangingRole -= this.Handle<Exiled.Events.EventArgs.ChangingRoleEventArgs>((ev) => this.Player_ChangingRole(ev));
-            Exiled.Events.Handlers.Player.ChangingGroup -= this.Handle<Exiled.Events.EventArgs.ChangingGroupEventArgs>((ev) => this.Player_ChangingGroup(ev));
+            Exiled.Events.Handlers.Player.Banned -= this.Player_Banned;
+            Exiled.Events.Handlers.Player.Kicked -= this.Player_Kicked;
+            Exiled.Events.Handlers.Player.Died -= this.Player_Died;
+            Exiled.Events.Handlers.Player.Hurting -= this.Player_Hurting;
+            Exiled.Events.Handlers.Player.PreAuthenticating -= this.Player_PreAuthenticating;
+            Exiled.Events.Handlers.Player.Verified -= this.Player_Verified;
+            Exiled.Events.Handlers.Player.Destroying -= this.Player_Destroying;
+            Exiled.Events.Handlers.Player.Left -= this.Player_Left;
+            Exiled.Events.Handlers.Player.Escaping -= this.Player_Escaping;
+            Exiled.Events.Handlers.Player.ChangingRole -= this.Player_ChangingRole;
+            Exiled.Events.Handlers.Player.ChangingGroup -= this.Player_ChangingGroup;
 
             // Exiled.Events.Handlers.Player.ThrowingGrenade -= this.Handle<Exiled.Events.EventArgs.ThrowingGrenadeEventArgs>((ev) => this.Player_ThrowingGrenade(ev));
-            Exiled.Events.Handlers.Player.Handcuffing -= this.Handle<Exiled.Events.EventArgs.HandcuffingEventArgs>((ev) => this.Player_Handcuffing(ev));
-            Exiled.Events.Handlers.Player.RemovingHandcuffs -= this.Handle<Exiled.Events.EventArgs.RemovingHandcuffsEventArgs>((ev) => this.Player_RemovingHandcuffs(ev));
-            Exiled.Events.Handlers.Player.IntercomSpeaking -= this.Handle<Exiled.Events.EventArgs.IntercomSpeakingEventArgs>((ev) => this.Player_IntercomSpeaking(ev));
-            Exiled.Events.Handlers.Player.ActivatingWarheadPanel -= this.Handle<Exiled.Events.EventArgs.ActivatingWarheadPanelEventArgs>((ev) => this.Player_ActivatingWarheadPanel(ev));
-            Exiled.Events.Handlers.Player.ReceivingEffect -= this.Handle<Exiled.Events.EventArgs.ReceivingEffectEventArgs>((ev) => this.Player_ReceivingEffect(ev));
-            Exiled.Events.Handlers.Scp914.Activating -= this.Handle<Exiled.Events.EventArgs.ActivatingEventArgs>((ev) => this.Scp914_Activating(ev));
-            Exiled.Events.Handlers.Scp079.TriggeringDoor -= this.Handle<Exiled.Events.EventArgs.TriggeringDoorEventArgs>((ev) => this.Scp079_TriggeringDoor(ev));
-            Exiled.Events.Handlers.Scp079.InteractingTesla -= this.Handle<Exiled.Events.EventArgs.InteractingTeslaEventArgs>((ev) => this.Scp079_InteractingTesla(ev));
-            Exiled.Events.Handlers.Scp096.AddingTarget -= this.Handle<Exiled.Events.EventArgs.AddingTargetEventArgs>((ev) => this.Scp096_AddingTarget(ev));
-            Exiled.Events.Handlers.Scp096.Enraging -= this.Handle<Exiled.Events.EventArgs.EnragingEventArgs>((ev) => this.Scp096_Enraging(ev));
-            Exiled.Events.Handlers.Warhead.Detonated -= this.Handle(() => this.Warhead_Detonated(), "WarheadDetonated");
-            Exiled.Events.Handlers.Warhead.Starting -= this.Handle<Exiled.Events.EventArgs.StartingEventArgs>((ev) => this.Warhead_Starting(ev));
-            Exiled.Events.Handlers.Warhead.Stopping -= this.Handle<Exiled.Events.EventArgs.StoppingEventArgs>((ev) => this.Warhead_Stopping(ev));
-            Exiled.Events.Handlers.Server.RoundEnded -= this.Handle<Exiled.Events.EventArgs.RoundEndedEventArgs>((ev) => this.Server_RoundEnded(ev));
-            Exiled.Events.Handlers.Server.WaitingForPlayers -= this.Handle(() => this.Server_WaitingForPlayers(), "WaitingForPlayers");
-            Exiled.Events.Handlers.Server.RoundStarted -= this.Handle(() => this.Server_RoundStarted(), "RoundStart");
-            Exiled.Events.Handlers.Server.RespawningTeam -= this.Handle<Exiled.Events.EventArgs.RespawningTeamEventArgs>((ev) => this.Server_RespawningTeam(ev));
-            Exiled.Events.Handlers.Map.Decontaminating -= this.Handle<Exiled.Events.EventArgs.DecontaminatingEventArgs>((ev) => this.Map_Decontaminating(ev));
-            Exiled.Events.Handlers.Map.GeneratorActivated -= this.Handle<Exiled.Events.EventArgs.GeneratorActivatedEventArgs>((ev) => this.Map_GeneratorActivated(ev));
-            Exiled.Events.Handlers.Map.ExplodingGrenade -= this.Handle<Exiled.Events.EventArgs.ExplodingGrenadeEventArgs>((ev) => this.Map_ExplodingGrenade(ev));
-            Exiled.Events.Handlers.Player.PickingUpItem -= this.Handle<Exiled.Events.EventArgs.PickingUpItemEventArgs>((ev) => this.Player_PickingUpItem(ev));
-            Exiled.Events.Handlers.Player.DroppingItem -= this.Handle<Exiled.Events.EventArgs.DroppingItemEventArgs>((ev) => this.Player_DroppingItem(ev));
+            Exiled.Events.Handlers.Player.Handcuffing -= this.Player_Handcuffing;
+            Exiled.Events.Handlers.Player.RemovingHandcuffs -= this.Player_RemovingHandcuffs;
+            Exiled.Events.Handlers.Player.IntercomSpeaking -= this.Player_IntercomSpeaking;
+            Exiled.Events.Handlers.Player.ActivatingWarheadPanel -= this.Player_ActivatingWarheadPanel;
+            Exiled.Events.Handlers.Player.ReceivingEffect -= this.Player_ReceivingEffect;
+            Exiled.Events.Handlers.Scp914.Activating -= this.Scp914_Activating;
+            Exiled.Events.Handlers.Scp079.TriggeringDoor -= this.Scp079_TriggeringDoor;
+            Exiled.Events.Handlers.Scp079.InteractingTesla -= this.Scp079_InteractingTesla;
+            Exiled.Events.Handlers.Scp096.AddingTarget -= this.Scp096_AddingTarget;
+            Exiled.Events.Handlers.Scp096.Enraging -= this.Scp096_Enraging;
+            Exiled.Events.Handlers.Warhead.Detonated -= this.Warhead_Detonated;
+            Exiled.Events.Handlers.Warhead.Starting -= this.Warhead_Starting;
+            Exiled.Events.Handlers.Warhead.Stopping -= this.Warhead_Stopping;
+            Exiled.Events.Handlers.Server.RoundEnded -= this.Server_RoundEnded;
+            Exiled.Events.Handlers.Server.WaitingForPlayers -= this.Server_WaitingForPlayers;
+            Exiled.Events.Handlers.Server.RoundStarted -= this.Server_RoundStarted;
+            Exiled.Events.Handlers.Server.RespawningTeam -= this.Server_RespawningTeam;
+            Exiled.Events.Handlers.Map.Decontaminating -= this.Map_Decontaminating;
+            Exiled.Events.Handlers.Map.GeneratorActivated -= this.Map_GeneratorActivated;
+            Exiled.Events.Handlers.Map.ExplodingGrenade -= this.Map_ExplodingGrenade;
+            Exiled.Events.Handlers.Player.PickingUpItem -= this.Player_PickingUpItem;
+            Exiled.Events.Handlers.Player.DroppingItem -= this.Player_DroppingItem;
             API.AnnonymousEvents.UnSubscribe("VANISH", this.OnVanishUpdate); // (Player player, byte level)
         }
 
