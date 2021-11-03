@@ -36,7 +36,7 @@ namespace Mistaken.RoundLogger
         {
             if (!(PluginHandler.Instance?.Config.IsEnabled ?? false))
                 return;
-            var bytes = Encoding.UTF8.GetBytes(new LogMessage(DateTime.Now, type, module, message.Replace("\n", "\\n")).ToString());
+            var bytes = Encoding.UTF8.GetBytes(new LogMessage(DateTime.Now, type, module, message.Replace("\n", "\\n")).ToString() + Environment.NewLine);
             try
             {
                 fileStream.WriteAsync(bytes, 0, bytes.Length);
@@ -197,7 +197,7 @@ namespace Mistaken.RoundLogger
             dir += Server.Port + "/";
             if (!Directory.Exists(dir))
                 Directory.CreateDirectory(dir);
-            return new FileStream(dir + $"{dateTime:yyyy-MM-dd_HH-mm-ss}.log", FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
+            return new FileStream(dir + $"{dateTime:yyyy-MM-dd_HH-mm-ss}.log", FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite, 512);
         }
     }
 }
