@@ -6,6 +6,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Exiled.API.Features;
 
@@ -33,6 +36,20 @@ namespace Mistaken.RoundLogger
         {
             if (!(PluginHandler.Instance?.Config.IsEnabled ?? false))
                 return;
+            var bytes = Encoding.UTF8.GetBytes(new LogMessage(DateTime.Now, type, module, message.Replace("\n", "\\n")).ToString() + Environment.NewLine);
+            try
+            {
+                fileStream.WriteAsync(bytes, 0, bytes.Length);
+            }
+            catch (ObjectDisposedException)
+            {
+                Server_RestartingRoundTask(true);
+            }
+            catch (Exception ex)
+            {
+                Exiled.API.Features.Log.Error(ex);
+            }
+
             Logs.Add(new LogMessage(DateTime.Now, type, module, message.Replace("\n", "\\n")));
             if (module != "LOGGER" && PluginHandler.Instance.Config.ShowRoundLogsInGameConsole)
                 Exiled.API.Features.Log.SendRaw($"[ROUND LOG] [{module}: {type}] {message}", ConsoleColor.DarkYellow);
@@ -122,6 +139,8 @@ namespace Mistaken.RoundLogger
 
         private static DateTime beginLog = DateTime.Now;
 
+        private static FileStream fileStream;
+
         private static void RegisterTypes(string type)
         {
             Types.Add(type);
@@ -139,21 +158,46 @@ namespace Mistaken.RoundLogger
             initiated = true;
             Exiled.API.Features.Log.Debug("Initiated RoundLogger");
             Exiled.Events.Handlers.Server.RestartingRound += Server_RestartingRound;
+            fileStream = CreateFile(out DateTime dateTime);
+            beginLog = dateTime;
             Log("LOGGER", "INFO", "Start of log");
-            beginLog = DateTime.Now;
         }
 
-        private static void Server_RestartingRound() => _ = Server_RestartingRoundTask();
+        private static void Server_RestartingRound() => Server_RestartingRoundTask();
 
-        private static async Task Server_RestartingRoundTask()
+        private static async void Server_RestartingRoundTask(bool error = false)
         {
-            await Task.Delay(10);
-            Log("LOGGER", "INFO", "End of log");
-            var logsArray = Logs.ToArray();
-            Logs.Clear();
+            if (!error)
+            {
+                await Task.Delay(10);
+                Log("LOGGER", "INFO", "End of log");
+            }
+
+            LogMessage[] logMessages;
+            DateTime dateTime;
+            lock (fileStream)
+            {
+                fileStream.Dispose();
+                fileStream = CreateFile(out dateTime);
+                logMessages = Logs.ToArray();
+                Logs.Clear();
+            }
+
+            OnEnd?.Invoke(logMessages, beginLog);
+            beginLog = dateTime;
             Log("LOGGER", "INFO", "Start of log");
-            OnEnd?.Invoke(logsArray, beginLog);
-            beginLog = DateTime.Now;
+        }
+
+        private static FileStream CreateFile(out DateTime dateTime)
+        {
+            dateTime = DateTime.Now;
+            string dir = Path.Combine(Paths.Plugins, "RoundLogger");
+            if (!Directory.Exists(dir))
+                Directory.CreateDirectory(dir);
+            dir = Path.Combine(dir, Server.Port.ToString());
+            if (!Directory.Exists(dir))
+                Directory.CreateDirectory(dir);
+            return new FileStream(Path.Combine(dir, $"{dateTime:yyyy-MM-dd_HH-mm-ss}.log"), FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite, 512);
         }
     }
 }

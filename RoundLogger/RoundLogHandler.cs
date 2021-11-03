@@ -22,7 +22,6 @@ namespace Mistaken.RoundLogger
             : base(p)
         {
             RLogger.IniIfNotAlready();
-            RLogger.OnEnd += this.RoundLogHandler_OnEnd;
         }
 
         public override bool IsBasic => true;
@@ -123,17 +122,6 @@ namespace Mistaken.RoundLogger
                 RLogger.Log("VANISH", "DISABLE", $"Vanish enabled for {ev.player.PlayerToString()}, level {ev.level}");
             else
                 RLogger.Log("VANISH", "ENABLE", $"Vanish disabled for {ev.player.PlayerToString()}");
-        }
-
-        private void RoundLogHandler_OnEnd(RLogger.LogMessage[] logs, DateTime roundStart)
-        {
-            string dir = Paths.Plugins + "/RoundLogger/";
-            if (!Directory.Exists(dir))
-                Directory.CreateDirectory(dir);
-            dir += Server.Port + "/";
-            if (!Directory.Exists(dir))
-                Directory.CreateDirectory(dir);
-            File.AppendAllLines(dir + $"{roundStart:yyyy-MM-dd_HH-mm-ss}.log", logs.Select(i => i.ToString()));
         }
 
         private void Player_DroppingItem(Exiled.Events.EventArgs.DroppingItemEventArgs ev)
