@@ -191,13 +191,13 @@ namespace Mistaken.RoundLogger
         private static FileStream CreateFile(out DateTime dateTime)
         {
             dateTime = DateTime.Now;
-            string dir = Paths.Plugins + "/RoundLogger/";
+            string dir = Path.Combine(Paths.Plugins, "RoundLogger");
             if (!Directory.Exists(dir))
                 Directory.CreateDirectory(dir);
-            dir += Server.Port + "/";
+            dir = Path.Combine(dir, Server.Port.ToString());
             if (!Directory.Exists(dir))
                 Directory.CreateDirectory(dir);
-            return new FileStream(dir + $"{dateTime:yyyy-MM-dd_HH-mm-ss}.log", FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite, 512);
+            return new FileStream(Path.Combine(dir, $"{dateTime:yyyy-MM-dd_HH-mm-ss}.log"), FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite, 512);
         }
     }
 }
