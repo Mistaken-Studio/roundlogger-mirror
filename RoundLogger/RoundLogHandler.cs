@@ -213,6 +213,8 @@ namespace Mistaken.RoundLogger
         {
             if (ev.Effect.GetType() == typeof(Stained))
                 return;
+            if (ev.CurrentState == 0 && ev.State == 0)
+                return;
             RLogger.Log("GAME EVENT", "RECIVE EFFECT", $"Updated status of {ev.Effect.GetType().Name} for {this.PTS(ev.Player)} from {ev.CurrentState} to {ev.State}, duration: {ev.Duration}s ({(ev.IsAllowed ? "allowed" : "denied")})");
         }
 
