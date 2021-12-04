@@ -285,7 +285,7 @@ namespace Mistaken.RoundLogger
             else if (ev.Target.Id == ev.Attacker?.Id)
                 RLogger.Log("GAME EVENT", "DAMAGE", $"{this.PTS(ev.Target)} hurt himself using {ev.Handler.Type}, done {ev.Amount} damage");
             else
-                RLogger.Log("GAME EVENT", "DAMAGE", $"{this.PTS(ev.Target)} was hurt by {this.PTS(ev.Attacker) ?? "WORLD"} using {ev.Handler.Item.Base.name}, done {ev.Amount} damage");
+                RLogger.Log("GAME EVENT", "DAMAGE", $"{this.PTS(ev.Target)} was hurt by {this.PTS(ev.Attacker) ?? "WORLD"} using {ev.Handler.Item?.Base.name ?? ev.Handler.Type.ToString()}, done {ev.Amount} damage");
         }
 
         private void Player_Died(Exiled.Events.EventArgs.DiedEventArgs ev)
@@ -293,7 +293,7 @@ namespace Mistaken.RoundLogger
             if (ev.Target.Id == ev.Killer?.Id)
                 RLogger.Log("GAME EVENT", "SUICIDE", $"{this.PTS(ev.Target)} killed himself using {ev.Handler.Type}");
             else
-                RLogger.Log("GAME EVENT", "KILL", $"{this.PTS(ev.Target)} was killed by {this.PTS(ev.Killer) ?? "WORLD"} using {ev.Handler.Item.Base.name}");
+                RLogger.Log("GAME EVENT", "KILL", $"{this.PTS(ev.Target)} was killed by {this.PTS(ev.Killer) ?? "WORLD"} using {ev.Handler.Item?.Base.name ?? ev.Handler.Type.ToString()}");
         }
 
         private void Player_Kicked(Exiled.Events.EventArgs.KickedEventArgs ev)
