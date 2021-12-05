@@ -4,14 +4,10 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using System;
-using System.IO;
-using System.Linq;
-using System.Reflection.Emit;
 using CustomPlayerEffects;
+using Exiled.API.Enums;
 using Exiled.API.Features;
 using Mistaken.API.Diagnostics;
-using UnityEngine;
 
 namespace Mistaken.RoundLogger
 {
@@ -141,7 +137,7 @@ namespace Mistaken.RoundLogger
 
         private void Map_ExplodingGrenade(Exiled.Events.EventArgs.ExplodingGrenadeEventArgs ev)
         {
-            RLogger.Log("GAME EVENT", "GRENADE", $"{this.PTS(ev.Thrower)}'s {(ev.GrenadeType == Exiled.API.Enums.GrenadeType.FragGrenade ? "Frag" : "Flash")} exploading on {ev.TargetsToAffect.Count} target ({(ev.IsAllowed ? "allowed" : "denied")})");
+            RLogger.Log("GAME EVENT", "GRENADE", $"{this.PTS(ev.Thrower)}'s {(ev.GrenadeType == GrenadeType.FragGrenade ? "Frag" : "Flash")} exploading on {ev.TargetsToAffect.Count} target ({(ev.IsAllowed ? "allowed" : "denied")})");
         }
 
         private void Map_Decontaminating(Exiled.Events.EventArgs.DecontaminatingEventArgs ev)
@@ -282,12 +278,12 @@ namespace Mistaken.RoundLogger
         {
             if (ev.Target.IsDead || ev.Target.IsGodModeEnabled)
                 return;
-            if (ev.Handler.Type == Exiled.API.Enums.DamageType.Scp207)
+            if (ev.Handler.Type == DamageType.Scp207)
                 RLogger.Log("GAME EVENT", "DAMAGE", $"{this.PTS(ev.Target)} was damaged by SCP-207 ({ev.Target.GetEffectIntensity<CustomPlayerEffects.Scp207>()})");
             else if (ev.Target.Id == ev.Attacker?.Id)
                 RLogger.Log("GAME EVENT", "DAMAGE", $"{this.PTS(ev.Target)} hurt himself using {ev.Handler.Type}, done {ev.Amount} damage");
             else
-                RLogger.Log("GAME EVENT", "DAMAGE", $"{this.PTS(ev.Target)} was hurt by {this.PTS(ev.Attacker) ?? "WORLD"} using {ev.Handler.Item?.Base.name ?? ev.Handler.Type.ToString()}, done {ev.Amount} damage");
+                RLogger.Log("GAME EVENT", "DAMAGE", $"{this.PTS(ev.Target)} was hurt by {this.PTS(ev.Attacker) ?? "WORLD"} using {ev.Handler.Type}, done {ev.Amount} damage");
         }
 
         private void Player_Died(Exiled.Events.EventArgs.DiedEventArgs ev)
@@ -295,7 +291,7 @@ namespace Mistaken.RoundLogger
             if (ev.Target.Id == ev.Killer?.Id)
                 RLogger.Log("GAME EVENT", "SUICIDE", $"{this.PTS(ev.Target)} killed himself using {ev.Handler.Type}");
             else
-                RLogger.Log("GAME EVENT", "KILL", $"{this.PTS(ev.Target)} was killed by {this.PTS(ev.Killer) ?? "WORLD"} using {ev.Handler.Item?.Base.name ?? ev.Handler.Type.ToString()}");
+                RLogger.Log("GAME EVENT", "KILL", $"{this.PTS(ev.Target)} was killed by {this.PTS(ev.Killer) ?? "WORLD"} using {ev.Handler.Type}");
         }
 
         private void Player_Kicked(Exiled.Events.EventArgs.KickedEventArgs ev)
