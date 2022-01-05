@@ -282,11 +282,11 @@ namespace Mistaken.RoundLogger
             if (ev.Target.IsDead || ev.Target.IsGodModeEnabled)
                 return;
             if (ev.Handler.Type == DamageType.Scp207)
-                RLogger.Log("GAME EVENT", "DAMAGE", $"{this.PTS(ev.Target)} was damaged by SCP-207 ({ev.Target.GetEffectIntensity<CustomPlayerEffects.Scp207>()})");
+                RLogger.Log("GAME EVENT", "DAMAGE", $"{this.PTS(ev.Target)} was damaged by SCP-207 ({ev.Target.GetEffectIntensity<CustomPlayerEffects.Scp207>()}) ({(ev.IsAllowed ? "allowed" : "disallowed")})");
             else if (ev.Target.Id == ev.Attacker?.Id)
-                RLogger.Log("GAME EVENT", "DAMAGE", $"{this.PTS(ev.Target)} hurt himself using {ev.Handler.Type}, done {ev.Amount} damage");
+                RLogger.Log("GAME EVENT", "DAMAGE", $"{this.PTS(ev.Target)} hurt himself using {ev.Handler.Type}, done {ev.Amount} damage ({(ev.IsAllowed ? "allowed" : "disallowed")})");
             else
-                RLogger.Log("GAME EVENT", "DAMAGE", $"{this.PTS(ev.Target)} was hurt by {this.PTS(ev.Attacker) ?? "WORLD"} using {ev.Handler.Type}, done {ev.Amount} damage");
+                RLogger.Log("GAME EVENT", "DAMAGE", $"{this.PTS(ev.Target)} was hurt by {this.PTS(ev.Attacker) ?? "WORLD"} using {ev.Handler.Type}, done {ev.Amount} damage ({(ev.IsAllowed ? "allowed" : "disallowed")})");
         }
 
         private void Player_Died(Exiled.Events.EventArgs.DiedEventArgs ev)
