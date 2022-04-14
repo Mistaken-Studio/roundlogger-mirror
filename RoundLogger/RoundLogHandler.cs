@@ -224,7 +224,8 @@ namespace Mistaken.RoundLogger
 
         private void Player_IntercomSpeaking(Exiled.Events.EventArgs.IntercomSpeakingEventArgs ev)
         {
-            RLogger.Log("GAME EVENT", "INTERCOM", $"{this.PTS(ev.Player)} is using intercom ({(ev.IsAllowed ? "allowed" : "disallowed")})");
+            if (!Round.IsStarted)
+                RLogger.Log("GAME EVENT", "INTERCOM", $"{this.PTS(ev.Player)} is using intercom ({(ev.IsAllowed ? "allowed" : "disallowed")})");
         }
 
         private void Player_RemovingHandcuffs(Exiled.Events.EventArgs.RemovingHandcuffsEventArgs ev)
