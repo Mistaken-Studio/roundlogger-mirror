@@ -286,9 +286,15 @@ namespace Mistaken.RoundLogger
             if (ev.Handler.Type == DamageType.Scp207)
                 RLogger.Log("GAME EVENT", "DAMAGE", $"{this.PTS(ev.Target)} was damaged by SCP-207 ({ev.Target.GetEffectIntensity<CustomPlayerEffects.Scp207>()}) ({(ev.IsAllowed ? "allowed" : "disallowed")})");
             else if (ev.Target.Id == ev.Attacker?.Id)
-                RLogger.Log("GAME EVENT", "DAMAGE", $"{this.PTS(ev.Target)} hurt himself using {ev.Handler.Type}, done {ev.Target.GetRealDamageAmount((PlayerStatsSystem.StandardDamageHandler)ev.Handler.Base)} damage ({(ev.IsAllowed ? "allowed" : "disallowed")})");
+            {
+                var rd = ev.Target.GetRealDamageAmount((PlayerStatsSystem.StandardDamageHandler)ev.Handler.Base, out var hd, out var ahpd);
+                RLogger.Log("GAME EVENT", "DAMAGE", $"{this.PTS(ev.Target)} hurt himself using {ev.Handler.Type}, done damage: {ev.Amount}  real damage: {rd}  HP damage: {hd}  AHP damage: {ahpd} ({(ev.IsAllowed ? "allowed" : "disallowed")})");
+            }
             else
-                RLogger.Log("GAME EVENT", "DAMAGE", $"{this.PTS(ev.Target)} was hurt by {this.PTS(ev.Attacker) ?? "WORLD"} using {ev.Handler.Type}, done {ev.Target.GetRealDamageAmount((PlayerStatsSystem.StandardDamageHandler)ev.Handler.Base)} damage ({(ev.IsAllowed ? "allowed" : "disallowed")})");
+            {
+                var rd = ev.Target.GetRealDamageAmount((PlayerStatsSystem.StandardDamageHandler)ev.Handler.Base, out var hd, out var ahpd);
+                RLogger.Log("GAME EVENT", "DAMAGE", $"{this.PTS(ev.Target)} was hurt by {this.PTS(ev.Attacker) ?? "WORLD"} using {ev.Handler.Type}, done damage: {ev.Amount}  real damage: {rd}  HP damage: {hd}  AHP damage: {ahpd} ({(ev.IsAllowed ? "allowed" : "disallowed")})");
+            }
         }
 
         private void Player_Died(Exiled.Events.EventArgs.DiedEventArgs ev)
