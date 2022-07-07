@@ -229,7 +229,7 @@ namespace Mistaken.RoundLogger
 
         private void Player_RemovingHandcuffs(Exiled.Events.EventArgs.RemovingHandcuffsEventArgs ev)
         {
-            RLogger.Log("GAME EVENT", "HANDCUFF", $"{this.PTS(ev.Target)} was uncuffed, cuffer was {this.PTS(ev.Cuffer)} ({(ev.IsAllowed ? "allowed" : "denied")})");
+            RLogger.Log("GAME EVENT", "HANDCUFF", $"{this.PTS(ev.Target)} was uncuffed, uncuffed by {this.PTS(ev.Cuffer)} ({(ev.IsAllowed ? "allowed" : "denied")})");
         }
 
         /*private void Player_ThrowingGrenade(Exiled.Events.EventArgs.ThrowingGrenadeEventArgs ev)
