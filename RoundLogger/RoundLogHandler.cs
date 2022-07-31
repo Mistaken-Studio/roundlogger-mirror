@@ -8,6 +8,7 @@ using CustomPlayerEffects;
 using Exiled.API.Enums;
 using Exiled.API.Features;
 using Mistaken.API.Diagnostics;
+using Mistaken.API.Extensions;
 
 namespace Mistaken.RoundLogger
 {
@@ -224,7 +225,8 @@ namespace Mistaken.RoundLogger
 
         private void Player_IntercomSpeaking(Exiled.Events.EventArgs.IntercomSpeakingEventArgs ev)
         {
-            RLogger.Log("GAME EVENT", "INTERCOM", $"{this.PTS(ev.Player)} is using intercom ({(ev.IsAllowed ? "allowed" : "disallowed")})");
+            if (Round.IsStarted)
+                RLogger.Log("GAME EVENT", "INTERCOM", $"{this.PTS(ev.Player)} is using intercom ({(ev.IsAllowed ? "allowed" : "disallowed")})");
         }
 
         private void Player_RemovingHandcuffs(Exiled.Events.EventArgs.RemovingHandcuffsEventArgs ev)
@@ -284,9 +286,15 @@ namespace Mistaken.RoundLogger
             if (ev.Handler.Type == DamageType.Scp207)
                 RLogger.Log("GAME EVENT", "DAMAGE", $"{this.PTS(ev.Target)} was damaged by SCP-207 ({ev.Target.GetEffectIntensity<CustomPlayerEffects.Scp207>()}) ({(ev.IsAllowed ? "allowed" : "disallowed")})");
             else if (ev.Target.Id == ev.Attacker?.Id)
-                RLogger.Log("GAME EVENT", "DAMAGE", $"{this.PTS(ev.Target)} hurt himself using {ev.Handler.Type}, done {ev.Amount} damage ({(ev.IsAllowed ? "allowed" : "disallowed")})");
+            {
+                var rd = ev.Target.GetRealDamageAmount((PlayerStatsSystem.StandardDamageHandler)ev.Handler.Base, out var hd, out var ahpd);
+                RLogger.Log("GAME EVENT", "DAMAGE", $"{this.PTS(ev.Target)} hurt himself using {ev.Handler.Type}, done damage: {ev.Amount}  real damage: {rd}  HP damage: {hd}  AHP damage: {ahpd} ({(ev.IsAllowed ? "allowed" : "disallowed")})");
+            }
             else
-                RLogger.Log("GAME EVENT", "DAMAGE", $"{this.PTS(ev.Target)} was hurt by {this.PTS(ev.Attacker) ?? "WORLD"} using {ev.Handler.Type}, done {ev.Amount} damage ({(ev.IsAllowed ? "allowed" : "disallowed")})");
+            {
+                var rd = ev.Target.GetRealDamageAmount((PlayerStatsSystem.StandardDamageHandler)ev.Handler.Base, out var hd, out var ahpd);
+                RLogger.Log("GAME EVENT", "DAMAGE", $"{this.PTS(ev.Target)} was hurt by {this.PTS(ev.Attacker) ?? "WORLD"} using {ev.Handler.Type}, done damage: {ev.Amount}  real damage: {rd}  HP damage: {hd}  AHP damage: {ahpd} ({(ev.IsAllowed ? "allowed" : "disallowed")})");
+            }
         }
 
         private void Player_Died(Exiled.Events.EventArgs.DiedEventArgs ev)
