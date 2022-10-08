@@ -1,0 +1,26 @@
+{
+  "Name": "RoundLogger",
+  "Author": "Mistaken Devs",
+  "LatestVersion": "2.2.5",
+  "BuildId": "2.2.5-master-00000000",
+  "FileName": "Mistaken.RoundLogger.dll",
+  "UpdateUrl": "https://git.mistaken.pl/api/v4/projects/20/packages/generic/plugins/2.2.5/Mistaken.RoundLogger.dll",
+  "BuildDate": "2022-10-08 21:44:47",
+  "Dependencies": [
+    {
+      "FileName": "Mistaken.Updater.dll",
+      "IsPlugin": true,
+      "DownloadUrl": "https://git.mistaken.pl/api/v4/projects/8/repository/files/manifest.json/raw?ref=ci-testing"
+    },
+    {
+      "FileName": "0Mistaken.API.dll",
+      "IsPlugin": true,
+      "DownloadUrl": "https://git.mistaken.pl/api/v4/projects/9/repository/files/manifest.json/raw?ref=ci-testing-3"
+    },
+    {
+      "FileName": "Newtonsoft.Json.dll",
+      "IsPlugin": false,
+      "DownloadUrl": "https://git.mistaken.pl/api/v4/projects/14/repository/files/Newtonsoft.Json.dll/raw?ref=master"
+    }
+  ]
+}
