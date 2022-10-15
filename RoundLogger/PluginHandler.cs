@@ -7,11 +7,14 @@
 using System;
 using Exiled.API.Enums;
 using Exiled.API.Features;
+using JetBrains.Annotations;
+using Mistaken.API.Diagnostics;
 
 namespace Mistaken.RoundLogger
 {
     /// <inheritdoc/>
-    public class PluginHandler : Plugin<Config>
+    [UsedImplicitly]
+    internal class PluginHandler : Plugin<Config>
     {
         /// <inheritdoc/>
         public override string Author => "Mistaken Devs";
@@ -33,9 +36,9 @@ namespace Mistaken.RoundLogger
         {
             Instance = this;
 
-            new RoundLogHandler(this);
+            Module.RegisterHandler<RoundLogHandler>(this);
 
-            API.Diagnostics.Module.OnEnable(this);
+            Module.OnEnable(this);
 
             base.OnEnabled();
         }
@@ -43,7 +46,7 @@ namespace Mistaken.RoundLogger
         /// <inheritdoc/>
         public override void OnDisabled()
         {
-            API.Diagnostics.Module.OnDisable(this);
+            Module.OnDisable(this);
 
             base.OnDisabled();
         }
