@@ -30,13 +30,13 @@ namespace Mistaken.RoundLogger
         /// Used to log message.
         /// </summary>
         /// <param name="module">Module.</param>
-        /// <param name="type">Type.</param>
+        /// <param name="shortName">Type.</param>
         /// <param name="message">Message.</param>
-        public static void Log(string module, string type, string message)
+        public static void Log(string module, string shortName, string message)
         {
             if (!(PluginHandler.Instance?.Config.IsEnabled ?? false))
                 return;
-            var bytes = Encoding.UTF8.GetBytes(new LogMessage(DateTime.Now, type, module, message.Replace("\n", "\\n")).ToString() + Environment.NewLine);
+            var bytes = Encoding.UTF8.GetBytes(new LogMessage(DateTime.Now, shortName, module, message.Replace("\n", "\\n")).ToString() + Environment.NewLine);
             try
             {
                 fileStream.WriteAsync(bytes, 0, bytes.Length);
@@ -50,9 +50,9 @@ namespace Mistaken.RoundLogger
                 Exiled.API.Features.Log.Error(ex);
             }
 
-            Logs.Add(new LogMessage(DateTime.Now, type, module, message.Replace("\n", "\\n")));
+            Logs.Add(new LogMessage(DateTime.Now, shortName, module, message.Replace("\n", "\\n")));
             if (module != "LOGGER" && PluginHandler.Instance.Config.ShowRoundLogsInGameConsole)
-                Exiled.API.Features.Log.SendRaw($"[ROUND LOG] [{module}: {type}] {message}", ConsoleColor.DarkYellow);
+                Exiled.API.Features.Log.SendRaw($"[ROUND LOG] [{module}: {shortName}] {message}", ConsoleColor.DarkYellow);
         }
 
         /// <summary>
@@ -84,9 +84,9 @@ namespace Mistaken.RoundLogger
             public DateTime Time;
 
             /// <summary>
-            /// Log Type.
+            /// Log short name.
             /// </summary>
-            public string Type;
+            public string ShortName;
 
             /// <summary>
             /// Log Module.
@@ -101,15 +101,15 @@ namespace Mistaken.RoundLogger
             /// <summary>
             /// Initializes a new instance of the <see cref="LogMessage"/> struct.
             /// </summary>
-            public LogMessage(DateTime time, string type, string module, string message)
+            public LogMessage(DateTime time, string shortName, string module, string message)
             {
                 this.Time = time;
-                this.Type = type;
+                this.ShortName = shortName;
                 this.Module = module;
                 this.Message = message;
 
-                if (!Types.Contains(this.Type))
-                    RegisterTypes(this.Type);
+                if (!Types.Contains(this.ShortName))
+                    RegisterTypes(this.ShortName);
                 if (!Modules.Contains(this.Module))
                     RegisterModules(this.Module);
             }
@@ -117,7 +117,7 @@ namespace Mistaken.RoundLogger
             /// <inheritdoc/>
             public override string ToString()
             {
-                string tmpType = this.Type;
+                string tmpType = this.ShortName;
                 while (tmpType.Length < typesMaxLength)
                     tmpType += " ";
                 string tmpModule = this.Module;

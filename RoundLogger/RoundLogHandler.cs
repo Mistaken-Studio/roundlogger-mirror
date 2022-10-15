@@ -67,7 +67,7 @@ namespace Mistaken.RoundLogger
                     Exiled.Events.Handlers.Player.PickingUpItem += this.Player_PickingUpItem;
                     Exiled.Events.Handlers.Player.DroppingItem += this.Player_DroppingItem;
 
-                    API.AnnonymousEvents.Subscribe("VANISH", this.OnVanishUpdate); // (Player player, byte level)
+                    Mistaken.API.AnnonymousEvents.Subscribe("VANISH", this.OnVanishUpdate); // (Player player, byte level)
                 },
                 "LateEnable");
         }
@@ -109,7 +109,7 @@ namespace Mistaken.RoundLogger
             Exiled.Events.Handlers.Map.ExplodingGrenade -= this.Map_ExplodingGrenade;
             Exiled.Events.Handlers.Player.PickingUpItem -= this.Player_PickingUpItem;
             Exiled.Events.Handlers.Player.DroppingItem -= this.Player_DroppingItem;
-            API.AnnonymousEvents.UnSubscribe("VANISH", this.OnVanishUpdate); // (Player player, byte level)
+            Mistaken.API.AnnonymousEvents.UnSubscribe("VANISH", this.OnVanishUpdate); // (Player player, byte level)
         }
 
         private void OnVanishUpdate(object rawEv)
