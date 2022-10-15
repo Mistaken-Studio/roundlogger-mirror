@@ -1,4 +1,10 @@
-﻿using Exiled.API.Interfaces;
+﻿// -----------------------------------------------------------------------
+// <copyright file="LoggableModule.cs" company="Mistaken">
+// Copyright (c) Mistaken. All rights reserved.
+// </copyright>
+// -----------------------------------------------------------------------
+
+using Exiled.API.Interfaces;
 using JetBrains.Annotations;
 using Mistaken.API.Diagnostics;
 
@@ -24,7 +30,7 @@ namespace Mistaken.RoundLogger.API
         /// <param name="shortName">Short name of logged event.</param>
         protected void RLog(string message, string shortName = "INFO")
         {
-            RLogger.Log($"{Plugin.Name}.{Name}", shortName, message);
+            RLogger.Log($"{this.Plugin.Name}.{this.Name}", shortName, message);
         }
     }
 }
